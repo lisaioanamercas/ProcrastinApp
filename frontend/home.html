@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ProcastinApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <span class="brand-name">ProcastinApp</span>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="action-btn" id="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="action-btn" id="stats-btn">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="action-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <span class="user-name" id="user-name">User</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title" id="welcome-title">Welcome back, User!</h1>
+            <p class="welcome-subtitle" id="welcome-subtitle">Ready to conquer your day? Let's make it productive!</p>
+            
+            <div class="progress-summary">
+                <div class="progress-item">
+                    <span class="progress-number" id="tasks-completed">0</span>
+                    <span class="progress-label">Tasks Completed</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-number" id="tasks-total">0</span>
+                    <span class="progress-label">Total Tasks</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-number" id="habits-completed">0</span>
+                    <span class="progress-label">Habits Completed</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-number" id="productivity-score">0%</span>
+                    <span class="progress-label">Productivity Score</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Tasks Section -->
+            <div class="card" style="animation-delay: 0.4s;">
+                <div class="card-header">
+                    <h2 class="card-title">My Tasks</h2>
+                    <button class="btn" id="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                </div>
+                
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="today">Today</button>
+                    <button class="filter-btn" data-filter="week">This Week</button>
+                    <button class="filter-btn" data-filter="overdue">Overdue</button>
+                </div>
+                
+                <div class="task-list" id="task-list">
+                    <!-- Tasks will be loaded here dynamically -->
+                    <div class="task-item">
+                        <div class="task-checkbox" data-id="1"></div>
+                        <div class="task-details">
+                            <div class="task-name">Complete project proposal</div>
+                            <div class="task-meta">
+                                <span><i class="fas fa-book"></i> Computer Science</span>
+                                <span><i class="fas fa-clock"></i> 2 hours</span>
+                                <span><i class="fas fa-calendar"></i> Today</span>
+                                <span><i class="fas fa-chart-line"></i> High</span>
+                            </div>
+                        </div>
+                        <div class="task-actions">
+                            <button class="action-icon edit-task" data-id="1"><i class="fas fa-edit"></i></button>
+                            <button class="action-icon delete-task" data-id="1"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer" style="margin-top: 20px;">
+                    <button class="btn" id="organize-tasks-btn"><i class="fas fa-sort-amount-down"></i> Organize My Tasks</button>
+                </div>
+            </div>
+            
+            <!-- Habits Section -->
+            <div class="card" style="animation-delay: 0.6s;">
+                <div class="card-header">
+                    <h2 class="card-title">My Habits</h2>
+                    <button class="btn" id="add-habit-btn"><i class="fas fa-plus"></i> Add Habit</button>
+                </div>
+                
+                <div class="habit-list" id="habit-list">
+                    <!-- Habits will be loaded here dynamically -->
+                    <div class="habit-item">
+                        <div class="habit-info">
+                            <div class="habit-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="habit-details">
+                                <div class="task-name">Morning Reading</div>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-clock"></i> 08:00 AM</span>
+                                    <span><i class="fas fa-calendar-day"></i> Monday-Friday</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="habit-actions">
+                            <div class="habit-toggle" data-id="1"></div>
+                            <button class="action-icon delete-habit" data-id="1"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistics Section -->
+        <div class="card" style="animation-delay: 0.8s;">
+            <div class="card-header">
+                <h2 class="card-title">Study Statistics</h2>
+                <button class="btn btn-secondary" id="download-stats-btn"><i class="fas fa-download"></i> Download</button>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" id="weekly-completed">0</span>
+                    <span class="stat-label">Tasks This Week</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="avg-difficulty">0</span>
+                    <span class="stat-label">Avg. Difficulty</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="avg-duration">0h</span>
+                    <span class="stat-label">Avg. Duration</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="habit-streak">0</span>
+                    <span class="stat-label">Longest Streak</span>
+                </div>
+            </div>
+            
+            <div class="chart-container" id="chart-container">
+                <p>Click "View Statistics" to generate charts</p>
+                <!-- Chart image will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Add/Edit Task -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="task-modal-title">Add New Task</h3>
+                <button class="close-btn" id="close-task-modal">&times;</button>
+            </div>
+            <form id="task-form">
+                <input type="hidden" id="task-id" value="">
+                <div class="form-group">
+                    <label for="task-name" class="form-label">Task Name</label>
+                    <input type="text" id="task-name" class="form-input" placeholder="Enter task name" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-description" class="form-label">Description</label>
+                    <textarea id="task-description" class="form-textarea" placeholder="Describe your task"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-subject" class="form-label">Subject</label>
+                    <input type="text" id="task-subject" class="form-input" placeholder="Enter subject">
+                </div>
+                <div class="form-group">
+                    <label for="task-duration" class="form-label">Duration (minutes)</label>
+                    <input type="number" id="task-duration" class="form-input" min="5" step="5" placeholder="Enter duration in minutes">
+                </div>
+                <div class="form-group">
+                    <label for="task-difficulty" class="form-label">Difficulty</label>
+                    <select id="task-difficulty" class="form-select">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-deadline" class="form-label">Deadline</label>
+                    <input type="datetime-local" id="task-deadline" class="form-input">
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Save Task</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal: Add Habit -->
+    <div class="modal" id="habit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Habit</h3>
+                <button class="close-btn" id="close-habit-modal">&times;</button>
+            </div>
+            <form id="habit-form">
+                <div class="form-group">
+                    <label for="habit-name" class="form-label">Habit Name</label>
+                    <input type="text" id="habit-name" class="form-input" placeholder="Enter habit name" required>
+                </div>
+                <div class="form-group">
+                    <label for="habit-subject" class="form-label">Subject</label>
+                    <input type="text" id="habit-subject" class="form-input" placeholder="Enter subject">
+                </div>
+                <div class="form-group">
+                    <label for="habit-time" class="form-label">Time</label>
+                    <input type="time" id="habit-time" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Days of Week</label>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;">
+                        <label><input type="checkbox" value="monday"> Mon</label>
+                        <label><input type="checkbox" value="tuesday"> Tue</label>
+                        <label><input type="checkbox" value="wednesday"> Wed</label>
+                        <label><input type="checkbox" value="thursday"> Thu</label>
+                        <label><input type="checkbox" value="friday"> Fri</label>
+                        <label><input type="checkbox" value="saturday"> Sat</label>
+                        <label><input type="checkbox" value="sunday"> Sun</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Save Habit</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal: Statistics -->
+    <div class="modal" id="stats-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Study Statistics</h3>
+                <button class="close-btn" id="close-stats-modal">&times;</button>
+            </div>
+            <div id="stats-modal-content">
+                <div class="loading" id="stats-loading"></div>
+                <div id="stats-charts" class="stats-charts" style="display: none;">
+                    <img src="" alt="Study Statistics Chart" id="stats-image" class="chart-image">
+                    <div style="margin-top: 15px;">
+                        <button class="btn btn-secondary" id="download-chart-btn"><i class="fas fa-download"></i> Download Chart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
