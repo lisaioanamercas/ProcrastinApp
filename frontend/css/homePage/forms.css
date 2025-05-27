@@ -1,0 +1,174 @@
+/* Form Elements and Inputs */
+
+.form-group {
+    margin-bottom: var(--space-5);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: var(--space-2);
+}
+
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: var(--space-3);
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+    color: var(--gray-900);
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+textarea.form-control {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Form Select/Dropdown Enhancements */
+select.form-control,
+.form-select {
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    font-size: 1rem;
+    color: var(--gray-800);
+    width: 100%;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+    
+    /* Custom dropdown arrow */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+select.form-control:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+select.form-control:hover,
+.form-select:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    transform: translateY(-1px);
+}
+
+/* Option styling */
+select.form-control option,
+.form-select option {
+    padding: 12px;
+    background-color: var(--white);
+    color: var(--gray-800);
+}
+
+/* Add a highlight to the selected option */
+select.form-control option:checked,
+.form-select option:checked {
+    background-color: var(--primary-light);
+    color: var(--white);
+}
+
+/* Add styles for the disabled placeholder */
+select.form-control option[disabled],
+.form-select option[disabled] {
+    color: var(--gray-400);
+    font-style: italic;
+}
+
+/* Enhance animation for better UX */
+select.form-control,
+.form-select {
+    transition: all 0.3s ease;
+}
+
+/* Enhanced Subject Dropdown Styling */
+#task-subject,
+.modal-content select.form-control {
+    background-color: rgba(45, 45, 68, 0.95) !important;
+    color: var(--dark-text) !important;
+    border: 2px solid var(--dark-border) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: var(--space-3) var(--space-4) !important;
+    appearance: none !important;
+    width: 100% !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Style for options in the dropdown */
+#task-subject option,
+.modal-content select.form-control option {
+    background-color: #232342 !important;
+    color: var(--dark-text) !important;
+    padding: 12px 16px !important;
+}
+
+/* Highlight for selected or hovered option */
+#task-subject option:checked,
+#task-subject option:hover,
+.modal-content select.form-control option:checked,
+.modal-content select.form-control option:hover {
+    background-color: #373760 !important;
+    color: var(--primary-light) !important;
+}
+
+/* Add light theme styles to ensure it works in both themes */
+body:not(.dark-theme) #task-subject,
+body:not(.dark-theme) .modal-content select.form-control {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    color: var(--gray-800) !important;
+    border-color: var(--gray-200) !important;
+}
+
+body:not(.dark-theme) #task-subject option,
+body:not(.dark-theme) .modal-content select.form-control option {
+    background-color: #ffffff !important;
+    color: var(--gray-800) !important;
+}

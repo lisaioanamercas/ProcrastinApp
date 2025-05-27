@@ -6,7 +6,8 @@
     <title>Dashboard - ProcastinApp</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/homePage/main.css">
+    <link rel="icon" href="data:image/svg+xml, <svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
 
 </head>
 <body>
@@ -188,8 +189,11 @@
                     <textarea id="task-description" class="form-textarea" placeholder="Describe your task"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="task-subject" class="form-label">Subject</label>
-                    <input type="text" id="task-subject" class="form-input" placeholder="Enter subject">
+                    <label for="task-subject">Subject</label>
+                    <select id="task-subject" class="form-control" required>
+                        <option value="" disabled selected>Select a subject</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="task-duration" class="form-label">Duration (minutes)</label>
@@ -207,7 +211,11 @@
                     <label for="task-deadline" class="form-label">Deadline</label>
                     <input type="datetime-local" id="task-deadline" class="form-input">
                 </div>
-                <button type="submit" class="btn" style="width: 100%;">Save Task</button>
+                
+                <!-- Add this submit button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Task</button>
+                </div>
             </form>
         </div>
     </div>
@@ -268,6 +276,12 @@
         </div>
     </div>
 
+    <script src="scripts/homePage/subjects_list.js"></script>
+    <script src="scripts/homePage/tasks.js"></script>
+    <script src="scripts/homePage/taskUI.js"></script>
+    <!-- <script src="scripts/homePage/habbits.js"></script> -->
+    <!-- <script src="scripts/homePage/habbitUI.js"></script> -->
     <script src="scripts/main.js"></script>
+
 </body>
 </html>

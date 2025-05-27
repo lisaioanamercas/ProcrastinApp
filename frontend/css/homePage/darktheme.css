@@ -1,0 +1,193 @@
+/* Dark Theme Variables */
+:root {
+    /* Dark Theme */
+    --dark-bg: #0f0f23;
+    --dark-card: #1a1a2e;
+    --dark-border: #2d2d44;
+    --dark-text: #e2e8f0;
+    --dark-text-muted: #94a3b8;
+}
+
+/* Dark Theme Body */
+.dark-theme {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    color: var(--dark-text);
+}
+
+/* Dark Theme Header */
+.dark-theme .header {
+    background: rgba(26, 26, 46, 0.95);
+    border-bottom-color: var(--dark-border);
+}
+
+/* Dark Theme Action Buttons */
+.dark-theme .action-btn {
+    background: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+/* Dark Theme User Info */
+.dark-theme .user-info {
+    background: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+}
+
+.dark-theme .user-name {
+    color: var(--dark-text);
+}
+
+/* Dark Theme Welcome Section */
+.dark-theme .welcome-section {
+    background: rgba(26, 26, 46, 0.95);
+    border-color: var(--dark-border);
+}
+
+.dark-theme .welcome-subtitle {
+    color: var(--dark-text-muted);
+}
+
+.dark-theme .progress-label {
+    color: var(--dark-text-muted);
+}
+
+/* Dark Theme Cards */
+.dark-theme .card {
+    background: rgba(26, 26, 46, 0.95);
+    border-color: var(--dark-border);
+}
+
+.dark-theme .card-title {
+    color: var(--dark-text);
+}
+
+/* Dark Theme Task Items */
+.dark-theme .task-item {
+    background: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+}
+
+.dark-theme .task-name {
+    color: var(--dark-text);
+}
+
+.dark-theme .task-meta {
+    color: var(--dark-text-muted);
+}
+
+.dark-theme .task-item.completed .task-name {
+    color: var(--dark-text-muted);
+}
+
+/* Dark Theme Habit Items */
+.dark-theme .habit-item {
+    background: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+}
+
+/* Dark Theme Statistics */
+.dark-theme .stat-item {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.dark-theme .stat-label {
+    color: var(--dark-text-muted);
+}
+
+/* Dark Theme Modal */
+.dark-theme .modal-content {
+    background-color: rgba(26, 26, 46, 0.95);
+    border: 1px solid rgba(45, 45, 68, 0.8);
+    box-shadow: var(--shadow-xl), 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .modal-content .form-input, 
+.dark-theme .modal-content .form-select, 
+.dark-theme .modal-content .form-textarea {
+    background-color: rgba(45, 45, 68, 0.9);
+    border-color: var(--dark-border);
+}
+
+.dark-theme .modal-title {
+    color: var(--dark-text);
+}
+
+.dark-theme .close-btn:hover {
+    color: var(--dark-text);
+}
+
+/* Dark Theme Forms */
+.dark-theme .form-label {
+    color: var(--dark-text);
+}
+
+.dark-theme .form-input, 
+.dark-theme .form-select, 
+.dark-theme .form-textarea {
+    background: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+/* Dark Theme Chart Container */
+.dark-theme .chart-container {
+    background: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+}
+
+/* Dark Theme Form Select/Dropdown */
+.dark-theme select.form-control,
+.dark-theme .form-select {
+    background-color: rgba(45, 45, 68, 0.8);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+    appearance: none;
+    
+    /* Single custom dropdown arrow for dark theme */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.dark-theme select.form-control:hover,
+.dark-theme .form-select:hover {
+    background-color: rgba(45, 45, 68, 0.95);
+}
+
+.dark-theme select.form-control:focus,
+.dark-theme .form-select:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
+}
+
+.dark-theme select.form-control option,
+.dark-theme .form-select option {
+    background-color: var(--gray-800);
+    color: var(--dark-text);
+}
+
+.dark-theme select.form-control option[disabled],
+.dark-theme .form-select option[disabled] {
+    color: var(--gray-600);
+}
+
+/* Enhanced Subject Dropdown Styling - Dark Theme */
+.dark-theme #task-subject,
+.dark-theme .modal-content select.form-control {
+    background-color: rgba(45, 45, 68, 0.95) !important;
+    color: var(--dark-text) !important;
+    border: 2px solid var(--dark-border) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: var(--space-3) var(--space-4) !important;
+    appearance: none !important;
+    width: 100% !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    
+    /* Ensure only one arrow appears */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 16px !important;
+}
