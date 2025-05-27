@@ -6,7 +6,7 @@ Backend (Spring Boot)
 
 Frontend (HTML/JS/etc.)
 
-  Intră în folderul în care ai frontend-ul.Rulează comanda asta în terminal:
+  Intră în folderul în care ai frontend-ul. Rulează comanda asta în terminal:
   
           python -m http.server 5500
 
