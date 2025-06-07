@@ -35,4 +35,49 @@ class HabitService {
             return [];
         }
     }
+
+    async createHabit(habitData) {
+        console.log("Creating habit with data:", habitData);
+
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: this.getAuthHeader(),
+                body: JSON.stringify(habitData)
+            });
+
+            console.log("Response received:", response.status, response.statusText);
+
+            if (response.status === 401) {
+                alert("Your session has expired. Please log in again.");
+                window.location.href = 'login.html';
+                return null;
+            }
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.log("Error details:", errorText);
+                throw new Error(`Failed to create habit: ${response.status}`);
+            }
+
+            const responseText = await response.text();
+            let newHabit;
+            if (responseText.trim()) {
+                try {
+                    newHabit = JSON.parse(responseText);
+                    console.log("Habit created on server:", newHabit);
+                    this.habits.push(newHabit);
+                    return newHabit;
+                } catch (e) {
+                    console.error("Error parsing response JSON:", e);
+                    throw e;
+                }
+            } else {
+                throw new Error("Empty response from server");
+            }
+        } catch (error) {
+            console.error('Network error creating habit:', error);
+            throw error;
+        }
+    }
 }

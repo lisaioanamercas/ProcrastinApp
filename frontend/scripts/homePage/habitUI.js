@@ -36,6 +36,83 @@ class habitUi{
                 </div>
             </div>
         `).join('');
-        // Poți adăuga aici event listeners pentru toggle/delete dacă vrei
+        
     }
+      static showNewHabitModal() {
+        const habitModal = document.getElementById('habit-modal');
+        if (habitModal) {
+            habitModal.style.display = 'block';
+        }
+    }
+
+    static hideNewHabitModal() {
+        const habitModal = document.getElementById('habit-modal');
+        if (habitModal) {
+            habitModal.style.display = 'none';
+        }
+    }
+    
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const addHabitBtn = document.getElementById('add-habit-btn');
+    if (addHabitBtn) {
+        addHabitBtn.addEventListener('click', () => {
+            habitUi.showNewHabitModal();
+        });
+    }
+
+    const closeHabitModal = document.getElementById('close-habit-modal');
+    if (closeHabitModal) {
+        closeHabitModal.addEventListener('click', () => {
+            habitUi.hideNewHabitModal();
+        });
+    }
+
+    const habitModal = document.getElementById('habit-modal');
+    if (habitModal) {
+        habitModal.addEventListener('click', function(event) {
+            if (event.target === habitModal) {
+                habitUi.hideNewHabitModal();
+            }
+        });
+    }
+
+    const habitForm = document.getElementById('habit-form');
+    if (habitForm) {
+        habitForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('habit-name').value;
+            const subject = document.getElementById('habit-subject').value;
+            const time = document.getElementById('habit-time').value;
+
+            const daysChecked = Array.from(habitForm.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+         
+            const dayOfWeek = daysChecked.join(',');
+
+          
+            const habitData = {
+                name,
+                subject,
+                time, 
+                dayOfWeek,
+                recurring: true 
+            };
+
+            try {
+                await window.habitServiceInstance.createHabit(habitData);
+                habitUi.hideNewHabitModal();
+                if (window.habitUIInstance) {
+                    window.habitUIInstance.loadHabits();
+                }
+            } catch (err) {
+                alert('Eroare la salvarea habitului!');
+            }
+        });
+    }
+});
+
+

@@ -75,9 +75,12 @@ function loadDashboard() {
     const taskService = new TaskService();
     const subjectService = new SubjectService();
     const habitService = new HabitService();
-    const habitUI = new habitUi(habitService);  
+    const habitUI = new habitUi(habitService);
 
-    
+    // Pentru acces global la submit
+    window.habitServiceInstance = habitService;
+    window.habitUIInstance = habitUI;
+
     // Create and initialize UI handlers
     const taskUI = new TaskUI(taskService, subjectService);
     taskUI.loadTasks();

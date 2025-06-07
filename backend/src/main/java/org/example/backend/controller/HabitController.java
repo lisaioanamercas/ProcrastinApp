@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import org.example.backend.dto.CreateHabitRequest;
 import org.example.backend.dto.HabitsResponse;
 import org.example.backend.security.jwt.JwtUtils;
 import org.example.backend.service.HabitTaskService;
@@ -45,6 +47,28 @@ public class HabitController {
             Long userId = getUserIdFromToken(request);
             List<HabitsResponse> habits = habitTaskService.getUserHabits(userId);
             return ResponseEntity.ok(habits);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @Operation(summary = "Create a new habit", description = "Creates a new study habit for the authenticated user.")
+    @ApiResponse(responseCode = "201", description = "Habit created successfully")
+    @ApiResponse(responseCode = "401", description = "Unauthorized access")
+    @PostMapping
+    public ResponseEntity<HabitsResponse> createHabit(
+            @Valid @RequestBody CreateHabitRequest request,
+            HttpServletRequest httpServletRequest) {
+        try {
+            Long userId = getUserIdFromToken(httpServletRequest);
+
+            // Debug
+            System.out.println("Creating habit: " + request.getName());
+            System.out.println("Day of week: " + request.getDayOfWeek());
+            //System.out.println("Recurring: " + request.getRecurring());
+
+            HabitsResponse createdHabit = habitTaskService.createHabit(userId, request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdHabit);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
