@@ -4,9 +4,7 @@ class TaskService {
         this.tasks = [];
         this.currentFilter = 'all';
         
-        // Mock data as fallback
-        this.mockTasks = [
-            // ...existing mock data
+        this.mockTasks = [//nu mai am nimic
         ];
     }
 
@@ -41,7 +39,7 @@ class TaskService {
             console.error('Error loading tasks from API:', error);
             console.log('Using mock data instead');
             
-            // Only use mock data during development
+            //  mock data
             if (window.location.hostname === 'localhost') {
                 this.tasks = [...this.mockTasks];
                 return this.tasks;

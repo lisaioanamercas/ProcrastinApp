@@ -1,5 +1,8 @@
 package org.example.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.backend.dto.CreateTaskRequest;
@@ -14,9 +17,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Tasks", description = "Task management endpoints")
 @RestController
 @RequestMapping("/api/tasks")
 @CrossOrigin(origins = "*")
+@Tag(name = "Tasks", description = "Task management endpoints")
+// asta e pentru swagger-ui
 public class StudyTaskController {
 
     @Autowired
@@ -36,6 +42,8 @@ public class StudyTaskController {
         throw new RuntimeException("Invalid or missing authorization token");
     }
 
+    @Operation(summary = "Get all tasks", description = "Retrieves all tasks for the current user")
+    @ApiResponse(responseCode = "200", description = "Tasks retrieved successfully")
     @GetMapping
     public ResponseEntity<List<TaskResponse>> getUserTasks(HttpServletRequest request) {
         try{
@@ -47,7 +55,9 @@ public class StudyTaskController {
         }
     }
 
-    // creez un nou task pentru user ul autentificat
+    @Operation(summary = "Create a new task", description = "Creates a new study task for the authenticated user.")
+    @ApiResponse(responseCode = "201", description = "Task created successfully")
+    @ApiResponse(responseCode = "401", description = "Unauthorized access")
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(
             @Valid @RequestBody CreateTaskRequest request,
@@ -68,6 +78,9 @@ public class StudyTaskController {
         }
     }
 
+    @Operation(summary = "Get task by ID", description = "Fetches a specific task by its ID for the authenticated user.")
+    @ApiResponse(responseCode = "200", description = "Task found")
+    @ApiResponse(responseCode = "404", description = "Task not found")
     //get task by id -> da retreive la un task dupa id
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponse> getTask(
@@ -82,6 +95,9 @@ public class StudyTaskController {
         }
     }
 
+    @Operation(summary = "Update task", description = "Updates an existing task with new values.")
+    @ApiResponse(responseCode = "200", description = "Task updated successfully")
+    @ApiResponse(responseCode = "400", description = "Bad request or invalid data")
     //da update la un task
     @PutMapping("/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(
@@ -98,6 +114,9 @@ public class StudyTaskController {
     }
 
     // delete la un task
+    @Operation(summary = "Delete task", description = "Deletes the specified task for the authenticated user.")
+    @ApiResponse(responseCode = "204", description = "Task deleted successfully")
+    @ApiResponse(responseCode = "404", description = "Task not found")
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(
             @PathVariable Long taskId,
@@ -111,6 +130,9 @@ public class StudyTaskController {
         }
     }
 
+    @Operation(summary = "Toggle task completion", description = "Marks a task as completed or uncompleted.")
+    @ApiResponse(responseCode = "200", description = "Task toggled successfully")
+    @ApiResponse(responseCode = "404", description = "Task not found")
     // mark a task as completed (toggle)
     @PatchMapping("/{taskId}/toggle")
     public ResponseEntity<TaskResponse> toggleTaskCompletion(

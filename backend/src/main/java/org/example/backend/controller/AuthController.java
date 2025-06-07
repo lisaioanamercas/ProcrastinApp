@@ -1,4 +1,7 @@
 package org.example.backend.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.example.backend.dto.RegisterRequest;
 import org.example.backend.model.User;
@@ -16,6 +19,7 @@ import org.example.backend.dto.LoginRequest;
 import org.example.backend.dto.JwtResponse;
 
 
+@Tag(name = "Authentication", description = "User authentication and registration endpoints")
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:5500", "http://localhost:5500"})
@@ -36,6 +40,9 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @Operation(summary = "User login", description = "Authenticates the user and returns a JWT token.")
+    @ApiResponse(responseCode = "200", description = "Login successful")
+    @ApiResponse(responseCode = "400", description = "Invalid username or password")
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         // Try to find user by email first, then by username
@@ -54,6 +61,9 @@ public class AuthController {
     }
 // ...existing code...
 
+    @Operation(summary = "User registration", description = "Registers a new user with the provided details.")
+    @ApiResponse(responseCode = "200", description = "User registered successfully")
+    @ApiResponse(responseCode = "400", description = "Username or email already exists")
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername()))
