@@ -80,4 +80,21 @@ class HabitService {
             throw error;
         }
     }
+    async deleteHabit(habitId) {
+    try {
+        const response = await fetch(`${this.apiUrl}/${habitId}`, {
+            method: 'DELETE',
+            headers: this.getAuthHeader()
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to delete habit: ${response.status}`);
+        }
+        // Opțional: șterge habitul din this.habits local
+        this.habits = this.habits.filter(h => h.id !== habitId);
+        return true;
+    } catch (error) {
+        console.error('Error deleting habit:', error);
+        return false;
+    }
+}
 }

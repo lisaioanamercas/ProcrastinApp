@@ -36,6 +36,16 @@ class habitUi{
                 </div>
             </div>
         `).join('');
+
+         this.habitListEl.querySelectorAll('.delete-habit').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const habitId = btn.getAttribute('data-id');
+            if (confirm('Sigur vrei să ștergi acest habit?')) {
+                await this.habitService.deleteHabit(habitId);
+                this.loadHabits();
+            }
+        });
+    });
         
     }
       static showNewHabitModal() {
@@ -55,6 +65,14 @@ class habitUi{
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    const deleteHabitBtns = document.querySelectorAll('.delete-habit');
+
+
+    if( deleteHabitBtns) {
+
+    }
+
     const addHabitBtn = document.getElementById('add-habit-btn');
     if (addHabitBtn) {
         addHabitBtn.addEventListener('click', () => {

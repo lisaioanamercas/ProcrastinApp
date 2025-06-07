@@ -59,5 +59,13 @@ public class HabitTaskService {
         HabitsResponse response = new HabitsResponse(savedHabit);
         return response;
     }
+    public void deleteHabit(Long userId, Long habitId) {
+    StudyHabit habit = studyHabitRepository.findById(habitId)
+        .orElseThrow(() -> new RuntimeException("Habit not found"));
+    if (!habit.getUser().getId().equals(userId)) {
+        throw new RuntimeException("Unauthorized");
+    }
+    studyHabitRepository.delete(habit);
+}
 
 }

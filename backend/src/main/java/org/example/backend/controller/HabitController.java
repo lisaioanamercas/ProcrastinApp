@@ -73,4 +73,20 @@ public class HabitController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @Operation(summary = "Delete a habit", description = "Deletes a study habit by id for the authenticated user.")
+    @ApiResponse(responseCode = "204", description = "Habit deleted successfully")
+    @ApiResponse(responseCode = "401", description = "Unauthorized access")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHabit(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+        try {
+            Long userId = getUserIdFromToken(request);
+            habitTaskService.deleteHabit(userId, id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 }
