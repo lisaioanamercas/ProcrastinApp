@@ -114,12 +114,12 @@ class TaskUI {
             <div class="task-item ${task.completed ? 'completed' : ''}">
                 <div class="task-checkbox ${task.completed ? 'checked' : ''}" data-id="${task.id}"></div>
                 <div class="task-details">
-                    <div class="task-name">${task.title || task.name}</div>
+                    <div class="task-name">${task.name || task.title || 'Untitled Task'}</div>
                     <div class="task-meta">
-                        <span><i class="fas fa-book"></i> ${task.subject}</span>
-                        <span><i class="fas fa-clock"></i> ${task.duration} min</span>
+                        <span><i class="fas fa-book"></i> ${task.subject_name || 'No subject'}</span>
+                        <span><i class="fas fa-clock"></i> ${task.duration_minutes || 0} min</span>
                         <span><i class="fas fa-calendar"></i> ${new Date(task.deadline).toLocaleDateString()}</span>
-                        <span><i class="fas fa-chart-line"></i> ${task.difficulty}</span>
+                        <span><i class="fas fa-chart-line"></i> ${this.convertDifficultyToString(task.difficulty)}</span>
                     </div>
                 </div>
                 <div class="task-actions">
@@ -127,7 +127,7 @@ class TaskUI {
                     <button class="action-icon delete-task" data-id="${task.id}"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
-        `).join('');
+            `).join('');
 
         // Add event listeners
         document.querySelectorAll('.task-checkbox').forEach(checkbox => {
@@ -172,14 +172,17 @@ class TaskUI {
         this.taskIdField.value = task.id;
         document.getElementById('task-name').value = task.title || task.name || '';
         document.getElementById('task-description').value = task.description || '';
-        document.getElementById('task-subject').value = task.subject || '';
-        document.getElementById('task-duration').value = task.duration || '';
-        document.getElementById('task-difficulty').value = task.difficulty || 'medium';
+        document.getElementById('task-subject').value = task.subject_name || task.subject || '';
+        document.getElementById('task-duration').value = task.duration_minutes || task.duration || '';
+        
+        // Convert numeric difficulty to string for the dropdown
+        const difficultyString = this.convertDifficultyToString(task.difficulty);
+        document.getElementById('task-difficulty').value = difficultyString;
         
         // Format date for datetime-local input
         if (task.deadline) {
             const deadlineDate = new Date(task.deadline);
-            const formattedDate = deadlineDate.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+            const formattedDate = deadlineDate.toISOString().slice(0, 16);
             document.getElementById('task-deadline').value = formattedDate;
         } else {
             document.getElementById('task-deadline').value = '';

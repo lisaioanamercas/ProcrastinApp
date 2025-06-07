@@ -109,8 +109,8 @@ class TaskService {
                     id: Math.floor(Math.random() * 1000),
                     name: taskData.name,
                     description: taskData.description, 
-                    subject: taskData.subject,
-                    duration: taskData.duration_minutes,
+                    subject_name: taskData.subject,        // ✅ Fixed
+                    duration_minutes: taskData.duration_minutes, // ✅ Fixed
                     difficulty: taskData.difficulty,
                     deadline: taskData.deadline,
                     completed: false
