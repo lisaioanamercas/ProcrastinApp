@@ -74,12 +74,15 @@ function loadDashboard() {
     // Create service instances
     const taskService = new TaskService();
     const subjectService = new SubjectService();
+    const habitService = new HabitService();
+    const habitUI = new habitUi(habitService);  
 
     
     // Create and initialize UI handlers
     const taskUI = new TaskUI(taskService, subjectService);
     taskUI.loadTasks();
-    
+        habitUI.loadHabits();
+
     // Update stats
     updateStats();
 }
