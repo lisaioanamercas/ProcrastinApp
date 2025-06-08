@@ -11,8 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface StudyTaskRepository extends JpaRepository<StudyTask, Long> {
-
-    List<StudyTask> findByUserIdOrderByDeadlineAsc(Long userId);
+    List<StudyTask> findByUserId(Long userId);
 
     List<StudyTask> findByUserIdAndCompletedOrderByDeadlineAsc(Long userId, Boolean completed);
 

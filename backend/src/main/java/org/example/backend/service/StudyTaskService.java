@@ -14,7 +14,9 @@ import org.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +31,9 @@ public class StudyTaskService {
     @Autowired
     private SubjectRepository subjectRepository;
 
+
     public List<TaskResponse> getUserTasks(Long userId) {
-        List<StudyTask> tasks = studyTaskRepository.findByUserIdOrderByDeadlineAsc(userId);
+        List<StudyTask> tasks = studyTaskRepository.findByUserId(userId);
         return tasks.stream()
                 .map(TaskResponse::new)
                 .collect(Collectors.toList());
@@ -111,4 +114,36 @@ public class StudyTaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
         return new TaskResponse(task);
     }
+
+    public List<List<TaskResponse>> getGroupedTasks(Long userId) {
+        List<StudyTask> tasks = studyTaskRepository.findByUserId(userId);
+
+        List<StudyTask> sorted = tasks.stream()
+                .sorted(Comparator.comparingInt(this::priorityScore).reversed())
+                .collect(Collectors.toList());
+
+        List<List<TaskResponse>> result = new ArrayList<>();
+        result.add(sorted.stream().map(TaskResponse::new).collect(Collectors.toList()));
+        return result;
+    }
+
+    private int priorityScore(StudyTask task) {
+        int score = 0;
+
+        if (task.getDeadline() != null) {
+            long days = ChronoUnit.DAYS.between(LocalDate.now(), task.getDeadline().toLocalDate());
+            score += Math.max(0, 30 - (int)days); // cu cât mai aproape, cu atât scor mai mare
+        }
+        // Dificultate mare => scor mai mare
+        if (task.getDifficulty() != null) {
+            score += task.getDifficulty() * 10;
+        }
+        // Task nefinalizat => scor mai mare
+        if (!Boolean.TRUE.equals(task.getCompleted())) {
+            score += 20;
+        }
+        return score;
+    }
+
+
 }

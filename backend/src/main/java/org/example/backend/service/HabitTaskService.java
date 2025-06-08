@@ -92,10 +92,8 @@ public class HabitTaskService {
                 .findByHabitIdAndCompletionDate(habitId, today);
 
         if (completionOpt.isPresent()) {
-            // Dacă există, șterge completarea (debifează)
             habitCompletionRepository.delete(completionOpt.get());
         } else {
-            // Dacă nu există, creează completarea (bifează)
             HabitCompletion completion = new HabitCompletion();
             completion.setHabit(habit);
             completion.setCompleted(true);
@@ -103,6 +101,6 @@ public class HabitTaskService {
             habitCompletionRepository.save(completion);
         }
     }
-  
+
 
 }

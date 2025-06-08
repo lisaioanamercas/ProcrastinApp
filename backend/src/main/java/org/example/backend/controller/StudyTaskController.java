@@ -146,4 +146,11 @@ public class StudyTaskController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/grouped")
+    public ResponseEntity<List<List<TaskResponse>>> getGroupedTasks(HttpServletRequest request) {
+        Long userId = getUserIdFromToken(request);
+        List<List<TaskResponse>> groups = studyTaskService.getGroupedTasks(userId);
+        return ResponseEntity.ok(groups);
+    }
 }

@@ -49,9 +49,24 @@ class TaskService {
             }
         }
     }
+
+    async fetchGroupedTasks() {
+    const response = await fetch(`${this.apiUrl}/grouped`, {
+        method: 'GET',
+        headers: this.getAuthHeader()
+    });
     
-    // Create new task
-// Create new task
+    if (!response.ok) {
+        throw new Error('Eroare la organizarea taskurilor!');
+    }
+        const data = await response.json();
+
+    console.log("Fetching grouped tasks from API:", data);
+    return data;
+}
+
+
+    
     async createTask(taskData) {
         console.log("Creating task with data:", taskData);
         
@@ -277,4 +292,8 @@ class TaskService {
             productivityScore
         };
     }
+   
 }
+
+// New function to load grouped habits
+

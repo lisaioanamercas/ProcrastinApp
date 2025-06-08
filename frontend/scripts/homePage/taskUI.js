@@ -22,6 +22,7 @@ class TaskUI {
         
         this.initEventListeners();
         this.loadSubjects();
+        this.initTaskOrganizer();
     }
 
     // Load subjects for dropdown
@@ -105,12 +106,11 @@ class TaskUI {
         }
     }
     
-    renderTasks(filter) {
+    renderTasks(filter, customTasks) {
         if (!this.taskListEl) return;
-        
-        const filteredTasks = this.taskService.getFilteredTasks(filter);
+        const tasksToRender = customTasks || this.taskService.getFilteredTasks(filter);
 
-        this.taskListEl.innerHTML = filteredTasks.map(task => `
+        this.taskListEl.innerHTML = tasksToRender.map(task => `
             <div class="task-item ${task.completed ? 'completed' : ''}">
                 <div class="task-checkbox ${task.completed ? 'checked' : ''}" data-id="${task.id}"></div>
                 <div class="task-details">
@@ -127,7 +127,7 @@ class TaskUI {
                     <button class="action-icon delete-task" data-id="${task.id}"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
-            `).join('');
+        `).join('');
 
         // Add event listeners
         document.querySelectorAll('.task-checkbox').forEach(checkbox => {
@@ -152,7 +152,40 @@ class TaskUI {
             console.error('Failed to toggle task:', error);
         }
     }
-    
+renderGroupedHabits(groups) {
+    const container = document.getElementById('grouped-habits-list');
+    if (!container) return;
+    container.innerHTML = groups.map((group, idx) => `
+        <div class="habit-group">
+            <div class="habit-group-title">Grup ${idx + 1}</div>
+            ${group.map(habit => `
+                <div class="habit-item">
+                    <div class="task-name">${habit.name}</div>
+                    <div class="task-meta">${habit.time || ''} | ${habit.days || ''}</div>
+                </div>
+            `).join('')}
+        </div>
+    `).join('');
+}
+
+initTaskOrganizer() {
+    const organizeBtn = document.getElementById('organize-tasks-btn');
+    if (organizeBtn) {
+        organizeBtn.addEventListener('click', async () => {
+            try {
+                console.log("Organizing tasks...");
+                const groups = await this.taskService.fetchGroupedTasks();
+                const allTasks = groups.flat();
+                this.renderTasks(null, allTasks);
+            } catch (err) {
+                alert('Eroare la organizarea taskurilor!');
+                console.error('Failed to organize tasks:', err);
+            }
+        });
+    }
+}
+
+
     async deleteTask(taskId) {
         if (confirm('Are you sure you want to delete this task?')) {
             try {
@@ -292,5 +325,21 @@ class TaskUI {
         if (this.tasksCompletedEl) this.tasksCompletedEl.textContent = stats.completedTasks;
         if (this.tasksTotalEl) this.tasksTotalEl.textContent = stats.totalTasks;
         if (this.productivityScoreEl) this.productivityScoreEl.textContent = `${stats.productivityScore}%`;
+    }
+
+    renderGroupedTasks(groups) {
+        const container = document.getElementById('grouped-tasks-list');
+        if (!container) return;
+        container.innerHTML = groups.map((group, idx) => `
+            <div class="task-group">
+                <div class="task-group-title">Grup ${idx + 1}</div>
+                ${group.map(task => `
+                    <div class="task-item">
+                        <div class="task-name">${task.name}</div>
+                        <div class="task-meta">${task.subject_name || ''} | ${task.deadline ? new Date(task.deadline).toLocaleDateString() : ''}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
     }
 }
