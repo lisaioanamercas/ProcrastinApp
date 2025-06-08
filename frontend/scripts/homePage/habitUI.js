@@ -10,6 +10,7 @@ class habitUi{
         try {
             this.habits = await this.habitService.fetchHabits();
             this.renderHabits();
+            this.updateHabitsCompletedCount(); 
         } catch (error) {
             console.error('Failed to load habits:', error);
         }
@@ -31,7 +32,7 @@ class habitUi{
                     </div>
                 </div>
                 <div class="habit-actions">
-                    <div class="habit-toggle" data-id="${habit.id}"></div>
+                    <div class="habit-toggle${habit.completedToday ? ' active' : ''}" data-id="${habit.id}"></div>
                     <button class="action-icon delete-habit" data-id="${habit.id}"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>
@@ -50,10 +51,10 @@ class habitUi{
          // după ce randezi lista de habits
          this.habitListEl.querySelectorAll('.habit-toggle').forEach(toggle => {
             toggle.addEventListener('click', async (e) => {
+                toggle.classList.toggle('active');
                 const habitId = toggle.getAttribute('data-id');
                 await this.habitService.toggleHabitCompletion(habitId);
-                // Reîncarcă lista pentru a reflecta schimbarea
-                this.loadHabits();
+                // Nu mai apela this.loadHabits() aici, ca să nu pierzi efectul vizual instant!
             });
         });
     }
@@ -71,8 +72,12 @@ class habitUi{
         }
     }
 
-    
-    
+    updateHabitsCompletedCount() {
+        // Numără câte habit-uri au completedToday = true
+        const completedCount = this.habits.filter(h => h.completedToday).length;
+        const el = document.getElementById('habits-completed');
+        if (el) el.textContent = completedCount;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

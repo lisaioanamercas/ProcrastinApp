@@ -30,17 +30,25 @@ public class HabitTaskService {
     private HabitCompletionRepository habitCompletionRepository;
 
 
+
     public List<HabitsResponse> getUserHabits(Long userId) {
         List<StudyHabit> tasks = studyHabitRepository.findByUserId(userId);
         String currentDay = LocalDate.now().getDayOfWeek().name().toLowerCase();
 
-        List<StudyHabit> filtered = tasks.stream()
+        List<StudyHabit> filtered =  tasks.stream()
                 .filter(h -> Arrays.asList(h.getDayOfWeek().split(","))
                         .contains(currentDay))
                 .collect(Collectors.toList());
 
         return filtered.stream()
-                .map(HabitsResponse::new)
+                .map(habit -> {
+                    HabitsResponse resp = new HabitsResponse(habit);
+                    boolean completedToday = habitCompletionRepository
+                            .findByHabitIdAndCompletionDate(habit.getId(), LocalDate.now())
+                            .isPresent();
+                    resp.setCompletedToday(completedToday);
+                    return resp;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -95,5 +103,6 @@ public class HabitTaskService {
             habitCompletionRepository.save(completion);
         }
     }
+  
 
 }

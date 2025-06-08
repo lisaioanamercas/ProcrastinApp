@@ -18,6 +18,8 @@ public class HabitsResponse {
     private LocalTime time;
     private Long subjectId;
     private Long userId;
+    private boolean completedToday;
+
 
     public HabitsResponse(StudyHabit habit) {
 
