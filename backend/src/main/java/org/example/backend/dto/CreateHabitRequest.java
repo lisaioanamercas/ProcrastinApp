@@ -17,7 +17,7 @@ public class CreateHabitRequest {
 
 
     @NotBlank(message = "Day of week is required")
-    @Size(max = 10, message = "Day of week must be less than 10 characters")
+    @Size(max = 50, message = "Day of week must be less than 10 characters")
     private String dayOfWeek;
 
    /* @NotNull(message = "Recurring is required")

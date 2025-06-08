@@ -96,5 +96,20 @@ class HabitService {
         console.error('Error deleting habit:', error);
         return false;
     }
+} 
+    async toggleHabitCompletion(habitId) {
+    try {
+        const response = await fetch(`${this.apiUrl}/${habitId}/toggle`, {
+            method: 'PATCH',
+            headers: this.getAuthHeader()
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to toggle habit: ${response.status}`);
+        }
+        return true;
+    } catch (error) {
+        console.error('Error toggling habit:', error);
+        return false;
+    }
 }
 }

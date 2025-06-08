@@ -89,4 +89,20 @@ public class HabitController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @Operation(summary = "Toggle habit completion", description = "Marks a habit as completed or uncompleted for today")
+    @ApiResponse(responseCode = "200", description = "Habit toggled successfully")
+    @ApiResponse(responseCode = "404", description = "Habit not found")
+    @PatchMapping("/{habitId}/toggle")
+    public ResponseEntity<Void> toggleHabitCompletion(
+            @PathVariable Long habitId,
+            HttpServletRequest request) {
+        try {
+            Long userId = getUserIdFromToken(request);
+            habitTaskService.toggleHabitCompletion(userId, habitId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }

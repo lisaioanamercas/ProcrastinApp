@@ -47,6 +47,15 @@ class habitUi{
         });
     });
         
+         // după ce randezi lista de habits
+         this.habitListEl.querySelectorAll('.habit-toggle').forEach(toggle => {
+            toggle.addEventListener('click', async (e) => {
+                const habitId = toggle.getAttribute('data-id');
+                await this.habitService.toggleHabitCompletion(habitId);
+                // Reîncarcă lista pentru a reflecta schimbarea
+                this.loadHabits();
+            });
+        });
     }
       static showNewHabitModal() {
         const habitModal = document.getElementById('habit-modal');
@@ -61,6 +70,8 @@ class habitUi{
             habitModal.style.display = 'none';
         }
     }
+
+    
     
 }
 
