@@ -1,6 +1,9 @@
 // Global variables
 let currentUser = null;
-
+ const taskService = new TaskService();
+    const subjectService = new SubjectService();
+    const habitService = new HabitService();
+    const heatmapService = new HeatmapService();
 // DOM Elements
 const welcomeTitleEl = document.getElementById('welcome-title');
 const userNameEl = document.getElementById('user-name');
@@ -93,14 +96,11 @@ function updateUserInterface() {
 //     // Update stats
 //     updateStats();
 // }
-function loadDashboard() {
+async function loadDashboard() {
     console.log('Loading dashboard...');
     
     // Create service instances
-    const taskService = new TaskService();
-    const subjectService = new SubjectService();
-    const habitService = new HabitService();
-    const heatmapService = new HeatmapService();
+   
     
     console.log('HeatmapService created:', heatmapService);
     
@@ -116,8 +116,8 @@ function loadDashboard() {
 
     // Create and initialize UI handlers
     const taskUI = new TaskUI(taskService, subjectService);
-    taskUI.loadTasks();
-    habitUI.loadHabits();
+    await taskUI.loadTasks();
+    await habitUI.loadHabits();
     
     console.log('Initializing heatmap...');
     heatmapUI.init();
@@ -126,12 +126,19 @@ function loadDashboard() {
     updateStats();
 }
 
-// Statistics - Mock data
-function updateStats() {
+
+
+async function updateStats() {
+  
+        const stats = new StudyStats(taskService.tasks, habitService.habits);
+     
+        const statsFetch = await stats.fetchStudyStats();
+
+
     const elements = {
-        'weekly-completed': '12',
-        'avg-difficulty': '2.3',
-        'avg-duration': '1.5h',
+        'weekly-completed': stats.getTasksThisWeek(),
+        'avg-difficulty': statsFetch.avgDifficulty.toFixed(1),
+        'avg-duration': statsFetch.avgDuration.toFixed(1),
         'habit-streak': '7'
     };
     
