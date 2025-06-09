@@ -120,6 +120,42 @@
               
             </div>
         </div>
+
+        <!-- Calendar Heatmap Section -->
+        <div class="heatmap-section">
+            <div class="card heatmap-card" style="animation-delay: 1.0s;">
+                <div class="card-header">
+                    <h2 class="card-title">Activity Heatmap</h2>
+                    <div class="heatmap-controls">
+                        <button class="action-icon" id="prev-month-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="heatmap-month" id="current-month">December 2024</span>
+                        <button class="action-icon" id="next-month-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="heatmap-container" id="heatmap-container">
+                    <!-- Heatmap will be generated here -->
+                </div>
+                
+                <div class="heatmap-legend">
+                    <span class="legend-label">Less</span>
+                    <div class="legend-squares">
+                        <div class="legend-square" data-level="0"></div>
+                        <div class="legend-square" data-level="1"></div>
+                        <div class="legend-square" data-level="2"></div>
+                        <div class="legend-square" data-level="3"></div>
+                        <div class="legend-square" data-level="4"></div>
+                    </div>
+                    <span class="legend-label">More</span>
+                </div>
+            </div>
+        </div>
+
+
         
         <!-- Statistics Section -->
         <div class="card" style="animation-delay: 0.8s;">
@@ -262,8 +298,10 @@
     <script src="scripts/homePage/subjects_list.js"></script>
     <script src="scripts/homePage/tasks.js"></script>
     <script src="scripts/homePage/taskUI.js"></script>
-    <script src="scripts/homePage/habbits.js"></script> 
+    <script src="scripts/homePage/habbits.js"></script>
     <script src="scripts/homePage/habitUI.js"></script> 
+    <script src="scripts/homePage/heatmap.js"></script>
+    <script src="scripts/homePage/heatmapUI.js"></script>
    <script src="scripts/main.js"></script>
 
 </body>

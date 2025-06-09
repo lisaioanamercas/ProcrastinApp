@@ -75,16 +75,20 @@ function loadDashboard() {
     const taskService = new TaskService();
     const subjectService = new SubjectService();
     const habitService = new HabitService();
+    const heatmapService = new HeatmapService(); // Add this
     const habitUI = new habitUi(habitService);
-
+    const heatmapUI = new HeatmapUI(heatmapService);
     // Pentru acces global la submit
     window.habitServiceInstance = habitService;
     window.habitUIInstance = habitUI;
+    window.heatmapUIInstance = heatmapUI;
 
     // Create and initialize UI handlers
     const taskUI = new TaskUI(taskService, subjectService);
     taskUI.loadTasks();
-        habitUI.loadHabits();
+    habitUI.loadHabits();
+    heatmapUI.init(); // Add this
+
 
     // Update stats
     updateStats();
