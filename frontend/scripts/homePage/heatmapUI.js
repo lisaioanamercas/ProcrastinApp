@@ -199,17 +199,35 @@ class HeatmapUI {
         
         // Position tooltip
         const rect = element.getBoundingClientRect();
-        this.tooltip.style.left = rect.left + rect.width / 2 + 'px';
-        this.tooltip.style.top = rect.top - this.tooltip.offsetHeight - 8 + 'px';
+        const tooltipWidth = this.tooltip.offsetWidth || 200; // fallback width
+        const tooltipHeight = this.tooltip.offsetHeight || 80; // fallback height
+        let left = rect.right + 8;
+        let top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+
         
-        // Adjust if tooltip goes off screen
-        const tooltipRect = this.tooltip.getBoundingClientRect();
-        if (tooltipRect.left < 0) {
-            this.tooltip.style.left = '8px';
+            // Check if tooltip goes off the right edge of screen
+        if (left + tooltipWidth > window.innerWidth) {
+            // Position to the left of the cell instead
+            left = rect.left - tooltipWidth - 8;
         }
-        if (tooltipRect.right > window.innerWidth) {
-            this.tooltip.style.left = window.innerWidth - tooltipRect.width - 8 + 'px';
+        
+        // Check if tooltip goes off the left edge
+        if (left < 0) {
+            // Center it above the cell as fallback
+            left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+            top = rect.top - tooltipHeight - 8;
         }
+        
+        // Ensure tooltip doesn't go off top or bottom of screen
+        if (top < 0) {
+            top = rect.bottom + 8;
+        }
+        if (top + tooltipHeight > window.innerHeight) {
+            top = rect.top - tooltipHeight - 8;
+        }
+        
+        this.tooltip.style.left = left + 'px';
+        this.tooltip.style.top = top + 'px';
     }
 
     hideTooltip() {
