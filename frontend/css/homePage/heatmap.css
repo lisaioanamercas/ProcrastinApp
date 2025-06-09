@@ -1,8 +1,7 @@
 /* Calendar Heatmap Styles */
 
 .heatmap-section {
-    margin-top: var(--space-8);
-    /* Remove justify-content: flex-end and add grid positioning */
+    margin-top: 0; /* Remove margin since it's in grid now */
     grid-column: 1; /* Same column as tasks */
     width: 100%;
 }

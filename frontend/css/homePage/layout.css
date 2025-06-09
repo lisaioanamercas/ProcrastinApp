@@ -79,3 +79,9 @@
     gap: var(--space-8);
     margin-bottom: var(--space-8);
 }
+
+/* Set consistent heights for second row */
+.dashboard-grid > .heatmap-section .heatmap-card,
+.dashboard-grid > .card:nth-child(4) { /* Statistics card */
+    min-height: 400px; /* Adjust this value as needed */
+}
