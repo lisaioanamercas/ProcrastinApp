@@ -26,6 +26,6 @@ public class CreateHabitRequest {
     @NotNull(message = "Time is required")
     private LocalTime time;
 
-    @NotNull(message = "Subject ID is required")
-    private String subject;
+   /* @NotNull(message = "Subject ID is required")
+    private String subject;*/
 }

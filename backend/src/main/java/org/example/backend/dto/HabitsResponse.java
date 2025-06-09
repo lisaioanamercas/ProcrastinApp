@@ -16,7 +16,7 @@ public class HabitsResponse {
     private String dayOfWeek;
     private Boolean recurring;
     private LocalTime time;
-    private Long subjectId;
+  ///  private Long subjectId;
     private Long userId;
     private boolean completedToday;
 
@@ -29,7 +29,7 @@ public class HabitsResponse {
         this.dayOfWeek = habit.getDayOfWeek();
         this.recurring = habit.getRecurring();
         this.time = habit.getTime();
-        this.subjectId = habit.getSubject().getId();
+      //  this.subjectId = habit.getSubject().getId();
         this.userId = habit.getUser().getId();
     }
 

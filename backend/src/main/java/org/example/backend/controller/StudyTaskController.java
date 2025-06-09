@@ -67,7 +67,7 @@ public class StudyTaskController {
 
             // Debug
             System.out.println("Creating task: " + request.getName());
-            System.out.println("Subject name: " + request.getSubject());
+           // System.out.println("Subject name: " + request.getSubject());
             System.out.println("Duration: " + request.getDuration_minutes());
             System.out.println("Difficulty: " + request.getDifficulty());
 

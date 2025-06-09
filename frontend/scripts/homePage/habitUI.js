@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             const name = document.getElementById('habit-name').value;
-            const subject = document.getElementById('habit-subject').value;
+           // const subject = document.getElementById('habit-subject').value;
             const time = document.getElementById('habit-time').value;
 
             const daysChecked = Array.from(habitForm.querySelectorAll('input[type="checkbox"]:checked'))
@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
           
             const habitData = {
                 name,
-                subject,
                 time, 
                 dayOfWeek,
                 recurring: true 
