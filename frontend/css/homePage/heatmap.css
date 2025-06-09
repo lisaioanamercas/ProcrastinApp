@@ -2,14 +2,17 @@
 
 .heatmap-section {
     margin-top: var(--space-8);
-    display: flex;
-    justify-content: flex-end;
+    /* Remove justify-content: flex-end and add grid positioning */
+    grid-column: 1; /* Same column as tasks */
+    width: 100%;
 }
 
 .heatmap-card {
-    max-width: 800px;
+    /* Remove max-width: 800px; and make it match the task card */
     width: 100%;
+    max-width: none; /* Let it use full available width */
 }
+
 
 .heatmap-controls {
     display: flex;

@@ -40,8 +40,10 @@ class HeatmapService {
 
     // Generate mock activity data for development
     generateMockData(year, month) {
+        console.log(`Generating mock data for ${year}-${month}`);
         const data = {};
         const daysInMonth = new Date(year, month, 0).getDate();
+        console.log(`Days in month: ${daysInMonth}`);
         
         for (let day = 1; day <= daysInMonth; day++) {
             const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -58,9 +60,9 @@ class HeatmapService {
             };
         }
         
+        console.log('Generated mock data:', data);
         return data;
     }
-
     // Convert activity count to heatmap level (0-4)
     getActivityLevel(activityCount) {
         if (activityCount === 0) return 0;

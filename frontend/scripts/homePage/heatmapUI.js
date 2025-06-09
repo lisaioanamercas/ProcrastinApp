@@ -6,6 +6,11 @@ class HeatmapUI {
         this.monthLabel = document.getElementById('current-month');
         this.tooltip = null;
         
+        // Debug logging
+        console.log('HeatmapUI constructor called');
+        console.log('Container found:', !!this.container);
+        console.log('Month label found:', !!this.monthLabel);
+        
         this.initEventListeners();
         this.createTooltip();
     }
