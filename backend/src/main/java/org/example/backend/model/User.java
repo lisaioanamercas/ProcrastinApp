@@ -39,4 +39,13 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider = AuthProvider.LOCAL;
+
+    private String providerId;
+
+    private String imageUrl;
+
 }

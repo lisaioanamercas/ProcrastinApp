@@ -601,8 +601,9 @@ body {
 
 .social-buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr; /* Changed from 1fr 1fr to just 1fr */
     gap: var(--space-3);
+    justify-content: center;
 }
 
 .social-button {
@@ -619,8 +620,9 @@ body {
     color: var(--gray-700);
     text-decoration: none;
     transition: all var(--transition-fast);
+    max-width: 200px; /* Add max-width to center it better */
+    margin: 0 auto; /* Center the button */
 }
-
 .social-button:hover {
     border-color: var(--primary-color);
     transform: translateY(-1px);
