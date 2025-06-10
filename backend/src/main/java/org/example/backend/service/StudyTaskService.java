@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -100,11 +101,26 @@ public class StudyTaskService {
     }
 
     @Transactional
-    public TaskResponse toggleTaskCompletion(Long userId, Long taskId){
-        StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
+//    public TaskResponse toggleTaskCompletion(Long userId, Long taskId){
+//        StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
+//
+//        task.setCompleted(!task.getCompleted());
+//        StudyTask updatedTask = studyTaskRepository.save(task);
+//        return new TaskResponse(updatedTask);
+//    }
 
-        task.setCompleted(!task.getCompleted());
+    // In your StudyTaskServiceImpl (or equivalent)
+    public TaskResponse toggleTaskCompletion(Long userId, Long taskId) {
+        StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+        boolean newStatus = !task.getCompleted();
+        task.setCompleted(newStatus);
+        if (newStatus) {
+            task.setCompletedAt(LocalDateTime.now());
+        } else {
+            task.setCompletedAt(null);
+        }
         StudyTask updatedTask = studyTaskRepository.save(task);
         return new TaskResponse(updatedTask);
     }

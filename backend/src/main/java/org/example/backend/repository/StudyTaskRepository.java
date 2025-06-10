@@ -26,8 +26,11 @@ public interface StudyTaskRepository extends JpaRepository<StudyTask, Long> {
     @Query("SELECT COUNT(t) FROM StudyTask t WHERE t.user.id = :userId")
     Long countByUserId(@Param("userId") Long userId);
 
-    List<StudyTask> findByUserIdAndCompletedIsTrueAndDeadlineBetween(Long userId, LocalDateTime start, LocalDateTime end);
-
+    List<StudyTask> findByUserIdAndCompletedIsTrueAndCompletedAtBetween(
+            Long userId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
 
 }
 

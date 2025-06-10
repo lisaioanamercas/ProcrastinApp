@@ -46,6 +46,7 @@ public class StudyTask {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime completedAt;
 
     public LocalDateTime getDeadline() { return deadline; }
     public void setDeadline(LocalDateTime deadline) { this.deadline = deadline; }
@@ -62,4 +63,14 @@ public class StudyTask {
         this.completed = false;
         this.createdAt = LocalDateTime.now();
     }
+
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
+    }
+
+
 }
