@@ -99,7 +99,7 @@ function updateUserInterface() {
 async function loadDashboard() {
     console.log('Loading dashboard...');
     // Update stats
-    updateStats();
+    // updateStats();
     
     // Create service instances
    
@@ -125,7 +125,7 @@ async function loadDashboard() {
     heatmapUI.init();
 
     // Update stats
-    // updateStats();
+    updateStats();
 }
 
 
