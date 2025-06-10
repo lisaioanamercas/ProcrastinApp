@@ -55,17 +55,12 @@ public class HabitTaskService {
        public HabitsResponse createHabit(Long userId, CreateHabitRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-          /* Subject subject = subjectRepository.findByName(request.getSubject());
-           if (subject == null) {
-               throw new ResourceNotFoundException("Subject not found with name: " + request.getSubject());
-           }*/
+
 
         StudyHabit habit = new StudyHabit();
         habit.setName(request.getName());
         habit.setDayOfWeek(request.getDayOfWeek());
-     //   habit.setRecurring(request.getRecurring());
         habit.setTime(request.getTime());
-     //   habit.setSubject(subject);
         habit.setUser(user);
 
         StudyHabit savedHabit = studyHabitRepository.save(habit);

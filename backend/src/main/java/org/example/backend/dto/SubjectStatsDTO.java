@@ -9,7 +9,7 @@ public class SubjectStatsDTO {
     private String subjectName;
     private int totalTasks;
     private double avgDifficulty;
-    private double completionRate;  // percentage
-    private int incompleteTasksDuration; // in minutes
-    private int totalDuration; // in minutes
+    private double completionRate;
+    private int incompleteTasksDuration;
+    private int totalDuration;
 }

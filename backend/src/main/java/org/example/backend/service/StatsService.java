@@ -33,14 +33,12 @@ public class StatsService {
         LocalDate startOfWeek = today.minusDays(today.getDayOfWeek().getValue() - 1); // Monday
         LocalDate endOfWeek = startOfWeek.plusDays(6); // Sunday
 
-        // Count completed tasks
         int taskCount = studyTaskRepository.countByUserIdAndCompletedIsTrueAndCompletedAtBetween(
                 userId,
                 startOfWeek.atStartOfDay(),
                 endOfWeek.atTime(23, 59, 59)
         );
 
-        // Count habit completions for the current week
         List<HabitCompletion> habitCompletions = habitCompletionRepository.findByHabit_UserIdAndCompletionDateBetween(
                 userId, startOfWeek, endOfWeek);
         int habitCount = habitCompletions.size();

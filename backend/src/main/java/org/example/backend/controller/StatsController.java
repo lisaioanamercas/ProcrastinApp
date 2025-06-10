@@ -68,7 +68,6 @@ public class StatsController {
             Long userId = getUserIdFromToken(request);
             StudyStatsResponse stats = statsService.getStatsForUser(userId);
 
-            // Create a formatted text representation
             StringBuilder textContent = new StringBuilder();
             textContent.append("Study Statistics\n");
             textContent.append("===============\n\n");
@@ -78,7 +77,6 @@ public class StatsController {
             textContent.append("Current Streak: ").append(stats.getCurrentStreak()).append(" days\n");
             textContent.append("Longest Streak: ").append(stats.getLongestStreak()).append(" days\n");
 
-            // Set headers for text file download
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_PLAIN);
             headers.setContentDispositionFormData("attachment", "study_stats.txt");

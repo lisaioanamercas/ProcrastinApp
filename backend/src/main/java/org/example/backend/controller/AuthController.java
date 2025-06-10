@@ -59,7 +59,7 @@ public class AuthController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getEmail()));
     }
-// ...existing code...
+
 
     @Operation(summary = "User registration", description = "Registers a new user with the provided details.")
     @ApiResponse(responseCode = "200", description = "User registered successfully")

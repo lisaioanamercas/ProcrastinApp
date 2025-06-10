@@ -31,13 +31,4 @@ public class HabitCompletion {
     @Column(nullable = false)
     private Boolean completed = true;
 
-
-
-
-
-    public HabitCompletion(StudyHabit habit, LocalDate completionDate) {
-        this.habit = habit;
-        this.completionDate = completionDate;
-        this.completed = true;
-    }
 }

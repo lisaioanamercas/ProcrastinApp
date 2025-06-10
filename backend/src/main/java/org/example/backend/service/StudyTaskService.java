@@ -126,7 +126,6 @@ public class StudyTaskService {
             LocalDateTime now = LocalDateTime.now();
             task.setCompletedAt(now);
 
-            // Log the completion
             TaskCompletionLog log = new TaskCompletionLog();
             log.setUserId(userId);
             log.setTaskId(taskId);
@@ -147,33 +146,48 @@ public class StudyTaskService {
         return new TaskResponse(task);
     }
 
-    public List<List<TaskResponse>> getGroupedTasks(Long userId) {
+    public List<TaskResponse> getGroupedTasks(Long userId) {
         List<StudyTask> tasks = studyTaskRepository.findByUserId(userId);
 
-        List<StudyTask> sorted = tasks.stream()
+        return tasks.stream()
                 .sorted(Comparator.comparingInt(this::priorityScore).reversed())
+                .map(TaskResponse::new)
                 .collect(Collectors.toList());
-
-        List<List<TaskResponse>> result = new ArrayList<>();
-        result.add(sorted.stream().map(TaskResponse::new).collect(Collectors.toList()));
-        return result;
     }
 
     private int priorityScore(StudyTask task) {
+        if (Boolean.TRUE.equals(task.getCompleted())) {
+            return Integer.MIN_VALUE;
+        }
+
         int score = 0;
 
-        if (task.getDeadline() != null) {
-            long days = ChronoUnit.DAYS.between(LocalDate.now(), task.getDeadline().toLocalDate());
-            score += Math.max(0, 30 - (int)days); // cu cât mai aproape, cu atât scor mai mare
+        if (task.getDurationMinutes() != 0) {
+            int duration = task.getDurationMinutes();
+
+            if (task.getDeadline() != null) {
+                long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), task.getDeadline().toLocalDate());
+
+                if (daysLeft <= 1 && duration <= 30) {
+                    score += 40;
+                }
+            }
+
+            if (duration <= 30) {
+                score += 10;
+            } else if (duration >= 120) {
+                score -= 10;
+            }
         }
-        // Dificultate mare => scor mai mare
+
         if (task.getDifficulty() != null) {
             score += task.getDifficulty() * 10;
         }
-        // Task nefinalizat => scor mai mare
-        if (!Boolean.TRUE.equals(task.getCompleted())) {
-            score += 20;
-        }
+
+
+
+        score += 20;
+
         return score;
     }
 

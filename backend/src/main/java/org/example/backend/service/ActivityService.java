@@ -1,4 +1,3 @@
-// src/main/java/org/example/backend/service/ActivityService.java
 package org.example.backend.service;
 
 import org.example.backend.model.StudyTask;
@@ -40,7 +39,6 @@ public class ActivityService {
             result.put(date, dayData);
         }
 
-        // Use completedAt instead of deadline
         List<StudyTask> completedTasks = studyTaskRepository
                 .findByUserIdAndCompletedIsTrueAndCompletedAtBetween(
                         userId,
@@ -58,7 +56,6 @@ public class ActivityService {
             }
         }
 
-        // Habits logic remains unchanged
         List<HabitCompletion> completions = habitCompletionRepository
                 .findByHabit_User_IdAndCompletionDateBetween(userId, start, end);
         for (HabitCompletion hc : completions) {

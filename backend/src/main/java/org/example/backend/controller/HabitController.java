@@ -62,10 +62,8 @@ public class HabitController {
         try {
             Long userId = getUserIdFromToken(httpServletRequest);
 
-            // Debug
             System.out.println("Creating habit: " + request.getName());
             System.out.println("Day of week: " + request.getDayOfWeek());
-            //System.out.println("Recurring: " + request.getRecurring());
 
             HabitsResponse createdHabit = habitTaskService.createHabit(userId, request);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdHabit);
