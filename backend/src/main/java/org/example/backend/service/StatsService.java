@@ -87,48 +87,37 @@ public class StatsService {
 //
 //        return currentStreak;
 //    }
+
     public int getCurrentStreak(Long userId) {
-        List<TaskCompletionLog> completions = completionLogRepository.findByUserIdOrderByCompletionDateDesc(userId);
-        if (completions.isEmpty()) return 0;
+        Set<LocalDate> completionDates = new HashSet<>();
 
-        // Group by date and sort descending
-        List<LocalDate> sortedDates = completions.stream()
-                .map(TaskCompletionLog::getCompletionDate)
-                .distinct()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toList());
-
-        // If the most recent date is today, count backward
-        if (sortedDates.get(0).equals(LocalDate.now())) {
-            int streak = 1;
-            LocalDate expectedPrevDate = LocalDate.now();
-
-            for (int i = 1; i < sortedDates.size(); i++) {
-                expectedPrevDate = expectedPrevDate.minusDays(1);
-                if (sortedDates.get(i).equals(expectedPrevDate)) {
-                    streak++;
-                } else {
-                    break;
-                }
+        // 1. Get task completion dates
+        List<StudyTask> completedTasks = studyTaskRepository.findByUserIdAndCompletedIsTrue(userId);
+        for (StudyTask task : completedTasks) {
+            if (task.getCompletedAt() != null) {
+                completionDates.add(task.getCompletedAt().toLocalDate());
             }
-            return streak;
-        } else {
-            // If today has no completions, look at the most recent streak
-            int streak = 1;
-            LocalDate previousDate = sortedDates.get(0);
-
-            for (int i = 1; i < sortedDates.size(); i++) {
-                LocalDate currentDate = sortedDates.get(i);
-                if (currentDate.equals(previousDate.minusDays(1))) {
-                    streak++;
-                    previousDate = currentDate;
-                } else {
-                    break;
-                }
-            }
-            return streak;
         }
+
+        // 2. Get habit completion dates
+        List<HabitCompletion> habitCompletions = habitCompletionRepository.findByHabit_UserIdAndCompletedTrue(userId);
+        for (HabitCompletion hc : habitCompletions) {
+            completionDates.add(hc.getCompletionDate());
+        }
+
+        // 3. Calculate streak
+        int streak = 0;
+        LocalDate currentDate = LocalDate.now();
+
+        while (completionDates.contains(currentDate)) {
+            streak++;
+            currentDate = currentDate.minusDays(1);
+        }
+
+        return streak;
     }
+
+
     public int getLongestStreak(Long userId) {
         // Get all activity completions for this user (both tasks and habits)
         List<TaskCompletionLog> completions = completionLogRepository.findByUserIdOrderByCompletionDateDesc(userId);
@@ -182,32 +171,32 @@ public class StatsService {
 
 
 
-    @Transactional
-    public void simulateHabitCompletionStreak(Long userId, LocalDate startDate, LocalDate endDate, LocalDate... skipDates) {
-        // Convert skipDates to a Set for efficient lookups
-        Set<LocalDate> datesToSkip = new HashSet<>(Arrays.asList(skipDates));
-
-        // Get a habit for this user
-        StudyHabit habit = studyHabitRepository.findFirstByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("No habits found for user: " + userId));
-
-        LocalDate currentDate = startDate;
-        while (!currentDate.isAfter(endDate)) {
-            // Skip if this date is in the skip set
-            if (!datesToSkip.contains(currentDate)) {
-                // Check if completion already exists for this habit and date
-                boolean exists = habitCompletionRepository.existsByHabitIdAndCompletionDate(habit.getId(), currentDate);
-
-                if (!exists) {
-                    // Create a new HabitCompletion only if it doesn't exist
-                    HabitCompletion completion = new HabitCompletion(habit, currentDate);
-                    habitCompletionRepository.save(completion);
-                }
-            }
-
-            currentDate = currentDate.plusDays(1);
-        }
-    }
+//    @Transactional
+//    public void simulateHabitCompletionStreak(Long userId, LocalDate startDate, LocalDate endDate, LocalDate... skipDates) {
+//        // Convert skipDates to a Set for efficient lookups
+//        Set<LocalDate> datesToSkip = new HashSet<>(Arrays.asList(skipDates));
+//
+//        // Get a habit for this user
+//        StudyHabit habit = studyHabitRepository.findFirstByUserId(userId)
+//                .orElseThrow(() -> new ResourceNotFoundException("No habits found for user: " + userId));
+//
+//        LocalDate currentDate = startDate;
+//        while (!currentDate.isAfter(endDate)) {
+//            // Skip if this date is in the skip set
+//            if (!datesToSkip.contains(currentDate)) {
+//                // Check if completion already exists for this habit and date
+//                boolean exists = habitCompletionRepository.existsByHabitIdAndCompletionDate(habit.getId(), currentDate);
+//
+//                if (!exists) {
+//                    // Create a new HabitCompletion only if it doesn't exist
+//                    HabitCompletion completion = new HabitCompletion(habit, currentDate);
+//                    habitCompletionRepository.save(completion);
+//                }
+//            }
+//
+//            currentDate = currentDate.plusDays(1);
+//        }
+//    }
 
 
 
