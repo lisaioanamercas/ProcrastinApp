@@ -27,16 +27,76 @@
     color: var(--gray-600);
 }
 
-
-
+/* Subject Statistics Container */
 .subject-stats-container {
     padding: 20px;
 }
 
+/* Charts Section */
+.charts-section {
+    margin: 30px 0;
+}
+
+.charts-section h4 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color, #6366f1);
+    font-size: 1.5rem;
+}
+
+/* Main Subject Distribution Chart */
+.main-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.main-pie-chart {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 250px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.legend-text {
+    flex: 1;
+}
+
+.legend-value {
+    font-weight: 600;
+    color: var(--text-primary, #1e293b);
+}
+
+/* Subject Stats Grid */
 .subject-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
     margin: 20px 0;
 }
 
@@ -44,22 +104,68 @@
     background: var(--card-background, #fff);
     border: 1px solid var(--border-color, #e1e5e9);
     border-radius: var(--radius-lg, 12px);
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subject-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .subject-stat-card h5 {
-    margin: 0 0 15px 0;
+    margin: 0 0 20px 0;
     color: var(--primary-color, #6366f1);
     font-weight: 600;
+    font-size: 1.2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color, #6366f1);
+    padding-bottom: 10px;
+}
+
+/* Individual Subject Completion Chart */
+.subject-chart-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(139, 92, 246, 0.03);
+    border-radius: var(--radius-lg, 12px);
+}
+
+.completion-pie-chart {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.completion-chart-info {
+    flex: 1;
+    text-align: center;
+}
+
+.completion-percentage {
     font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color, #6366f1);
+    margin-bottom: 5px;
+}
+
+.completion-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #64748b);
 }
 
 .stat-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
+    padding: 12px 0;
     border-bottom: 1px solid var(--border-light, #f3f4f6);
 }
 
@@ -69,10 +175,211 @@
 
 .stat-row span:first-child {
     color: var(--text-secondary, #64748b);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 500;
 }
 
 .stat-row span:last-child {
     font-weight: 600;
     color: var(--text-primary, #1e293b);
+}
+
+/* Pie Chart Colors */
+:root {
+    --chart-color-1: #ff6b6b;  /* Red */
+    --chart-color-2: #4ecdc4;  /* Teal */
+    --chart-color-3: #45b7d1;  /* Blue */
+    --chart-color-4: #96ceb4;  /* Green */
+    --chart-color-5: #ffeaa7;  /* Yellow */
+    --chart-color-6: #dda0dd;  /* Plum */
+    --chart-color-7: #98d8c8;  /* Mint */
+    --chart-color-8: #fdcb6e;  /* Orange */
+    
+    --completed-color: #10b981;   /* Green for completed */
+    --incomplete-color: #ef4444; /* Red for incomplete */
+}
+
+/* Chart animations */
+@keyframes chartGrow {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.main-pie-chart, .completion-pie-chart {
+    animation: chartGrow 0.8s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-chart-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .main-pie-chart {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .subject-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .subject-chart-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .completion-pie-chart {
+        margin: 0 auto;
+    }
+}
+
+/* Chart hover effects */
+.chart-segment {
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.chart-segment:hover {
+    transform: scale(1.05);
+}
+
+/* Loading animation for charts */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    font-size: 1.1rem;
+    color: var(--text-secondary, #64748b);
+}
+
+.chart-loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color, #6366f1);
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Make stats modal scrollable */
+.modal#stats-modal {
+    align-items: flex-start; /* Start from top instead of center */
+    padding: 20px 0; /* Add some padding */
+}
+
+.modal#stats-modal .modal-content {
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh; /* Limit height to 90% of viewport */
+    overflow-y: auto; /* Make it scrollable */
+    margin: 20px auto; /* Center horizontally with margin */
+    position: relative;
+}
+
+/* Ensure the modal content has proper scrolling */
+#stats-modal-content {
+    max-height: calc(90vh - 120px); /* Account for header and padding */
+    overflow-y: auto;
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Custom scrollbar styling */
+#stats-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#stats-modal-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#stats-modal-content::-webkit-scrollbar-thumb {
+    background: var(--primary-color, #6366f1);
+    border-radius: 4px;
+}
+
+#stats-modal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark, #4f46e5);
+}
+
+/* Make sure charts don't break the layout */
+.subject-stats-container {
+    padding: 20px 10px 20px 0; /* Less right padding for scrollbar space */
+}
+
+/* Ensure main chart is responsive in modal */
+.main-chart-container {
+    margin-bottom: 30px;
+}
+
+.main-pie-chart {
+    width: min(300px, 80vw);
+    height: min(300px, 80vw);
+}
+
+/* Make subject cards responsive in modal */
+.subject-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .modal#stats-modal .modal-content {
+        width: 95%;
+        max-height: 95vh;
+        margin: 10px auto;
+    }
+    
+    #stats-modal-content {
+        max-height: calc(95vh - 100px);
+    }
+    
+    .main-pie-chart {
+        width: min(250px, 70vw);
+        height: min(250px, 70vw);
+    }
+    
+    .subject-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal#stats-modal .modal-content {
+        width: 98%;
+        max-height: 98vh;
+        margin: 5px auto;
+    }
+    
+    .main-pie-chart {
+        width: min(200px, 60vw);
+        height: min(200px, 60vw);
+    }
+    
+    .subject-chart-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .completion-pie-chart {
+        margin: 0 auto;
+    }
 }
