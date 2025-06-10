@@ -32,7 +32,7 @@ public class StudyHabit {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "day_of_week", length = 10)
+    @Column(name = "day_of_week", length = 100)
     private String dayOfWeek;
 
     @Column(name = "time")

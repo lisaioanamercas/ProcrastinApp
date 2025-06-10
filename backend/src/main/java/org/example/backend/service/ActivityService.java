@@ -24,7 +24,6 @@ public class ActivityService {
     @Autowired
     private HabitCompletionRepository habitCompletionRepository;
 
-    // src/main/java/org/example/backend/service/ActivityService.java
     public Map<String, Object> getMonthlyActivity(Long userId, int year, int month) {
         YearMonth ym = YearMonth.of(year, month);
         LocalDate start = ym.atDay(1);
@@ -85,6 +84,8 @@ public class ActivityService {
         }
         return flat;
     }
+
+
     private int getActivityLevel(int activityCount) {
         if (activityCount == 0) return 0;
         if (activityCount <= 2) return 1;

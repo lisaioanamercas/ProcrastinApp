@@ -32,6 +32,8 @@ public interface StudyTaskRepository extends JpaRepository<StudyTask, Long> {
             LocalDateTime end
     );
 
+    int countByUserIdAndCompletedIsTrueAndCompletedAtBetween(Long userId, LocalDateTime start, LocalDateTime end);
+
 }
 
 // momentan am metode pentru: gasirea taskurilor per utilizaot -- query uri pentru statisitici -- gasirea taskurilor dupa ID si userID :)

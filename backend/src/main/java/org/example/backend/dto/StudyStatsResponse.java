@@ -12,6 +12,6 @@ public class StudyStatsResponse {
     private double avgDifficulty;
     private double avgDuration;
     private int longestStreak;
-
+    private int currentStreak;
 
 }

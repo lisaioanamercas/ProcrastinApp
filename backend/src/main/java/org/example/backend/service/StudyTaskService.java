@@ -7,9 +7,11 @@ import org.example.backend.dto.UpdateTaskRequest;
 import org.example.backend.exception.ResourceNotFoundException;
 import org.example.backend.model.StudyTask;
 import org.example.backend.model.Subject;
+import org.example.backend.model.TaskCompletionLog;
 import org.example.backend.model.User;
 import org.example.backend.repository.StudyTaskRepository;
 import org.example.backend.repository.SubjectRepository;
+import org.example.backend.repository.TaskCompletionLogRepository;
 import org.example.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class StudyTaskService {
     @Autowired
     private SubjectRepository subjectRepository;
 
+    @Autowired
+    private TaskCompletionLogRepository completionLogRepository;
 
     public List<TaskResponse> getUserTasks(Long userId) {
         List<StudyTask> tasks = studyTaskRepository.findByUserId(userId);
@@ -114,12 +118,24 @@ public class StudyTaskService {
     public TaskResponse toggleTaskCompletion(Long userId, Long taskId) {
         StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
+
         boolean newStatus = !task.getCompleted();
         task.setCompleted(newStatus);
+
         if (newStatus) {
-            task.setCompletedAt(LocalDateTime.now());
+            LocalDateTime now = LocalDateTime.now();
+            task.setCompletedAt(now);
+
+            // Log the completion
+            TaskCompletionLog log = new TaskCompletionLog();
+            log.setUserId(userId);
+            log.setTaskId(taskId);
+            log.setCompletionDate(now.toLocalDate());
+            completionLogRepository.save(log);
+
         } else {
             task.setCompletedAt(null);
+            completionLogRepository.deleteByUserIdAndTaskId(userId, taskId);
         }
         StudyTask updatedTask = studyTaskRepository.save(task);
         return new TaskResponse(updatedTask);

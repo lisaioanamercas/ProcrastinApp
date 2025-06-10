@@ -16,4 +16,8 @@ public interface HabitCompletionRepository extends JpaRepository<HabitCompletion
 
     Optional<HabitCompletion> findByHabitIdAndCompletionDate(Long habitId, LocalDate completionDate);
 
-    List<HabitCompletion> findByHabit_User_IdAndCompletionDateBetween(Long userId, LocalDate start, LocalDate end);}
+    List<HabitCompletion> findByHabit_User_IdAndCompletionDateBetween(Long userId, LocalDate start, LocalDate end);
+
+    boolean existsByHabitIdAndCompletionDate(Long habitId, LocalDate completionDate);
+    List<HabitCompletion> findByHabit_UserIdAndCompletionDateBetween(Long userId, LocalDate start, LocalDate end);
+}

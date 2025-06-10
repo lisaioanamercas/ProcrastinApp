@@ -98,6 +98,8 @@ function updateUserInterface() {
 // }
 async function loadDashboard() {
     console.log('Loading dashboard...');
+    // Update stats
+    updateStats();
     
     // Create service instances
    
@@ -123,29 +125,42 @@ async function loadDashboard() {
     heatmapUI.init();
 
     // Update stats
-    updateStats();
+    // updateStats();
 }
 
 
 
 async function updateStats() {
   
+    try {
+        console.log('Fetching stats...');
+        
         const stats = new StudyStats(taskService.tasks, habitService.habits);
-     
         const statsFetch = await stats.fetchStudyStats();
+        
+        console.log('Stats received:', statsFetch);
 
-
-    const elements = {
-        'weekly-completed': stats.getTasksThisWeek(),
-        'avg-difficulty': statsFetch.avgDifficulty.toFixed(1),
-        'avg-duration': statsFetch.avgDuration.toFixed(1),
-        'habit-streak': '7'
-    };
-    
-    Object.entries(elements).forEach(([id, value]) => {
-        const element = document.getElementById(id);
-        if (element) element.textContent = value;
-    });
+        const elements = {
+            'weekly-completed': stats.getTasksThisWeek(),
+            'avg-difficulty': statsFetch.avgDifficulty.toFixed(1),
+            'avg-duration': statsFetch.avgDuration.toFixed(1),
+            'current-streak': statsFetch.currentStreak || 0,
+            'habit-streak': statsFetch.longestStreak || 0
+        };
+        
+        console.log('Updating elements:', elements);
+        
+        Object.entries(elements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = value;
+                console.log(`Updated ${id} to ${value}`);
+            }
+        });
+    } catch (error) {
+        console.error('Failed to update stats:', error);
+        // Don't update with 0 values on error, keep existing values
+    }
 }
 
 // Logout functionality
