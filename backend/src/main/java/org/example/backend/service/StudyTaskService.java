@@ -114,7 +114,6 @@ public class StudyTaskService {
 //        return new TaskResponse(updatedTask);
 //    }
 
-    // In your StudyTaskServiceImpl (or equivalent)
     public TaskResponse toggleTaskCompletion(Long userId, Long taskId) {
         StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));

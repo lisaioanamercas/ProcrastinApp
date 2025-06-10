@@ -83,13 +83,3 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
 }
-//explica fiecare metoda in parte:
-// 1. authenticateUser: Această metodă primește un obiect LoginRequest care conține numele de utilizator și parola.
-//    Ea folosește AuthenticationManager pentru a autentifica utilizatorul. Dacă autentificarea este reușită, generează un token JWT și returnează un obiect JwtResponse care conține token-ul, numele de utilizator și email-ul utilizatorului.
-// 2. registerUser: Această metodă primește un obiect RegisterRequest care conține informațiile necesare pentru înregistrarea unui nou utilizator.
-//    Verifică dacă numele de utilizator sau email-ul există deja în baza de date. Dacă nu există, creează un nou obiect User, îl salvează în baza de date și returnează un mesaj de succes.
-//    Dacă numele de utilizator sau email-ul există deja, returnează un mesaj de eroare corespunzător.
-// Aceste metode sunt esențiale pentru gestionarea autentificării și înregistrării utilizatorilor în aplicație, asigurând atât securitatea, cât și funcționalitatea necesară pentru accesul la resursele protejate.
-// Acest controller este responsabil pentru gestionarea autentificării și înregistrării utilizatorilor.
-// El definește două endpoint-uri: unul pentru autentificare (login) și altul pentru înregistrare (register).
-// Endpoint-urile sunt accesibile prin URL-ul "/api/auth" și folosesc metodele POST pentru a primi datele necesare.

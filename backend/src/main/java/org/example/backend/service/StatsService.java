@@ -212,7 +212,6 @@ public class StatsService {
             stats.setSubjectName(subject.getName());
             stats.setTotalTasks(subjectTasks.size());
 
-            // Calculate average difficulty
             double avgDifficulty = subjectTasks.stream()
                     .filter(t -> t.getDifficulty() != null)
                     .mapToInt(StudyTask::getDifficulty)
@@ -220,7 +219,6 @@ public class StatsService {
                     .orElse(0.0);
             stats.setAvgDifficulty(avgDifficulty);
 
-            // Calculate completion rate
             long completedTasks = subjectTasks.stream()
                     .filter(StudyTask::getCompleted)
                     .count();
@@ -228,14 +226,12 @@ public class StatsService {
                     (double) completedTasks / subjectTasks.size() * 100;
             stats.setCompletionRate(Math.round(completionRate * 100) / 100.0);
 
-            // Calculate duration for incomplete tasks
             int incompleteTasksDuration = subjectTasks.stream()
                     .filter(task -> !task.getCompleted())
                     .mapToInt(StudyTask::getDurationMinutes)
                     .sum();
             stats.setIncompleteTasksDuration(incompleteTasksDuration);
 
-            // Calculate total duration
             int totalDuration = subjectTasks.stream()
                     .mapToInt(StudyTask::getDurationMinutes)
                     .sum();

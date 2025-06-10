@@ -130,7 +130,6 @@ public class StudyTaskController {
     @Operation(summary = "Toggle task completion", description = "Marks a task as completed or uncompleted.")
     @ApiResponse(responseCode = "200", description = "Task toggled successfully")
     @ApiResponse(responseCode = "404", description = "Task not found")
-    // mark a task as completed (toggle)
     @PatchMapping("/{taskId}/toggle")
     public ResponseEntity<TaskResponse> toggleTaskCompletion(
             @PathVariable Long taskId,

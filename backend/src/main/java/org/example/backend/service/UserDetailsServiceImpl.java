@@ -24,10 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return UserDetailsImpl.build(user);
     }
-    //clasa asta este responsabila cu incarcarea detaliilor utilizatorului
-    // in baza de date, folosind UserRepository.
-    // Ea implementeaza UserDetailsService, care este o interfata din Spring Security.
-    // Metoda loadUserByUsername cauta utilizatorul dupa nume de utilizator
-    // si arunca o exceptie daca nu este gasit.
+
 
 }
