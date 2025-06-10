@@ -5,6 +5,8 @@ const subjectService = new SubjectService();
 const habitService = new HabitService();
 const heatmapService = new HeatmapService();
 const statsDownloadService = new StatsDownloadService();
+const subjectStatsService = new SubjectStatsService();
+
 // DOM Elements
 const welcomeTitleEl = document.getElementById('welcome-title');
 const userNameEl = document.getElementById('user-name');
@@ -179,6 +181,53 @@ if (logoutBtn) {
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
     
+    const statsBtn = document.getElementById('stats-btn');
+    if (statsBtn) {
+        statsBtn.addEventListener('click', async () => {
+            try {
+                const modal = document.getElementById('stats-modal');
+                const loading = document.getElementById('stats-loading');
+                const chartsDiv = document.getElementById('stats-charts');
+                
+                // Show modal
+                modal.style.display = 'flex';
+                
+                // Show loading, hide charts
+                loading.style.display = 'block';
+                chartsDiv.style.display = 'none';
+                
+                // Fetch and display subject stats
+                const data = await subjectStatsService.fetchSubjectStats();
+                subjectStatsService.displaySubjectStats(data);
+                
+            } catch (error) {
+                console.error('Error loading subject stats:', error);
+                alert('Failed to load subject statistics. Please try again.');
+                
+                // Hide modal on error
+                document.getElementById('stats-modal').style.display = 'none';
+            }
+        });
+    }
+    
+    // Add close modal functionality
+    const closeStatsModal = document.getElementById('close-stats-modal');
+    if (closeStatsModal) {
+        closeStatsModal.addEventListener('click', () => {
+            document.getElementById('stats-modal').style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside
+    const statsModal = document.getElementById('stats-modal');
+    if (statsModal) {
+        statsModal.addEventListener('click', (e) => {
+            if (e.target === statsModal) {
+                statsModal.style.display = 'none';
+            }
+        });
+    }
+
     // Add download button event listener
     const downloadBtn = document.getElementById('download-stats-btn');
     if (downloadBtn) {

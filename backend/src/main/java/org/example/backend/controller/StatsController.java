@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.backend.dto.StudyStatsResponse;
+import org.example.backend.dto.TasksBySubjectResponse;
 import org.example.backend.security.jwt.JwtUtils;
 import org.example.backend.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,35 @@ public class StatsController {
             return new ResponseEntity<>(textContent.toString(), headers, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @GetMapping(value = "/by-subject/download", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TasksBySubjectResponse> downloadStatsBySubject(HttpServletRequest request) {
+        try {
+            Long userId = getUserIdFromToken(request);
+            TasksBySubjectResponse stats = statsService.getTaskStatsBySubject(userId);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=subject_stats.json");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(stats);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/by-subject")
+    public ResponseEntity<TasksBySubjectResponse> getStatsBySubject(HttpServletRequest request) {
+        try {
+            Long userId = getUserIdFromToken(request);
+            TasksBySubjectResponse stats = statsService.getTaskStatsBySubject(userId);
+            return ResponseEntity.ok(stats);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 }

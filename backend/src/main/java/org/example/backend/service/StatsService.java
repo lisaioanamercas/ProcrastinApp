@@ -209,4 +209,55 @@ public class StatsService {
         }
     }
 
+
+
+
+    //aici e demo
+    public TasksBySubjectResponse getTaskStatsBySubject(Long userId) {
+        List<StudyTask> tasks = studyTaskRepository.findByUserId(userId);
+        Map<Subject, List<StudyTask>> tasksBySubject = tasks.stream()
+                .collect(Collectors.groupingBy(StudyTask::getSubject));
+
+        TasksBySubjectResponse response = new TasksBySubjectResponse();
+
+        tasksBySubject.forEach((subject, subjectTasks) -> {
+            SubjectStatsDTO stats = new SubjectStatsDTO();
+            stats.setSubjectName(subject.getName());
+            stats.setTotalTasks(subjectTasks.size());
+
+            // Calculate average difficulty
+            double avgDifficulty = subjectTasks.stream()
+                    .filter(t -> t.getDifficulty() != null)
+                    .mapToInt(StudyTask::getDifficulty)
+                    .average()
+                    .orElse(0.0);
+            stats.setAvgDifficulty(avgDifficulty);
+
+            // Calculate completion rate
+            long completedTasks = subjectTasks.stream()
+                    .filter(StudyTask::getCompleted)
+                    .count();
+            double completionRate = subjectTasks.isEmpty() ? 0 :
+                    (double) completedTasks / subjectTasks.size() * 100;
+            stats.setCompletionRate(Math.round(completionRate * 100) / 100.0);
+
+            // Calculate duration for incomplete tasks
+            int incompleteTasksDuration = subjectTasks.stream()
+                    .filter(task -> !task.getCompleted())
+                    .mapToInt(StudyTask::getDurationMinutes)
+                    .sum();
+            stats.setIncompleteTasksDuration(incompleteTasksDuration);
+
+            // Calculate total duration
+            int totalDuration = subjectTasks.stream()
+                    .mapToInt(StudyTask::getDurationMinutes)
+                    .sum();
+            stats.setTotalDuration(totalDuration);
+
+            response.getSubjects().add(stats);
+        });
+
+        return response;
+    }
+
 }
