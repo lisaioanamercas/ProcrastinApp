@@ -1,9 +1,10 @@
 // Global variables
 let currentUser = null;
- const taskService = new TaskService();
-    const subjectService = new SubjectService();
-    const habitService = new HabitService();
-    const heatmapService = new HeatmapService();
+const taskService = new TaskService();
+const subjectService = new SubjectService();
+const habitService = new HabitService();
+const heatmapService = new HeatmapService();
+const statsDownloadService = new StatsDownloadService();
 // DOM Elements
 const welcomeTitleEl = document.getElementById('welcome-title');
 const userNameEl = document.getElementById('user-name');
@@ -177,4 +178,25 @@ if (logoutBtn) {
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
+    
+    // Add download button event listener
+    const downloadBtn = document.getElementById('download-stats-btn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', async () => {
+            try {
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                
+                await statsDownloadService.downloadStats();
+                
+                // Reset button
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+            } catch (error) {
+                alert('Failed to download stats. Please try again.');
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download';
+            }
+        });
+    }
 });

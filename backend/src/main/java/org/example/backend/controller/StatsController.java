@@ -10,7 +10,9 @@ import org.example.backend.security.jwt.JwtUtils;
 import org.example.backend.service.StatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +56,35 @@ public class StatsController {
             return ResponseEntity.ok(stats);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+
+
+    @GetMapping("/download")
+    public ResponseEntity<String> downloadStatsAsText(HttpServletRequest request) {
+        try {
+            Long userId = getUserIdFromToken(request);
+            StudyStatsResponse stats = statsService.getStatsForUser(userId);
+
+            // Create a formatted text representation
+            StringBuilder textContent = new StringBuilder();
+            textContent.append("Study Statistics\n");
+            textContent.append("===============\n\n");
+            textContent.append("Tasks This Week: ").append(stats.getTasksThisWeek()).append("\n");
+            textContent.append("Average Difficulty: ").append(stats.getAvgDifficulty()).append("\n");
+            textContent.append("Average Duration: ").append(stats.getAvgDuration()).append(" minutes\n");
+            textContent.append("Current Streak: ").append(stats.getCurrentStreak()).append(" days\n");
+            textContent.append("Longest Streak: ").append(stats.getLongestStreak()).append(" days\n");
+
+            // Set headers for text file download
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            headers.setContentDispositionFormData("attachment", "study_stats.txt");
+
+            return new ResponseEntity<>(textContent.toString(), headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

@@ -115,11 +115,13 @@ public class StatsService {
         } else {
             // If today has no completions, look at the most recent streak
             int streak = 1;
-            LocalDate mostRecent = sortedDates.get(0);
+            LocalDate previousDate = sortedDates.get(0);
 
             for (int i = 1; i < sortedDates.size(); i++) {
-                if (sortedDates.get(i).equals(mostRecent.minusDays(i))) {
+                LocalDate currentDate = sortedDates.get(i);
+                if (currentDate.equals(previousDate.minusDays(1))) {
                     streak++;
+                    previousDate = currentDate;
                 } else {
                     break;
                 }
@@ -127,7 +129,6 @@ public class StatsService {
             return streak;
         }
     }
-
     public int getLongestStreak(Long userId) {
         // Get all activity completions for this user (both tasks and habits)
         List<TaskCompletionLog> completions = completionLogRepository.findByUserIdOrderByCompletionDateDesc(userId);
