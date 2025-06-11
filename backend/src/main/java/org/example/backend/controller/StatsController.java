@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Stats", description = "Endpoints for managing study stats")
-@RestController
+@Tag(name = "Stats", description = "Endpoints for retrieving and downloading study statistics")@RestController
 @RequestMapping("/api/stats")
 @CrossOrigin(origins = "*")
 public class StatsController {
@@ -49,7 +48,6 @@ public class StatsController {
     @Operation(summary = "Get all stats", description = "Retrieves all study stats for the current user")
     @ApiResponse(responseCode = "200", description = "Stats retrieved successfully")
     @GetMapping("/study")
-
     public ResponseEntity<StudyStatsResponse> getStudyStats(HttpServletRequest request) {
         try {
             Long userId = getUserIdFromToken(request);
@@ -61,7 +59,8 @@ public class StatsController {
     }
 
 
-
+    @Operation(summary = "Download stats as text", description = "Downloads study stats as a text file")
+    @ApiResponse(responseCode = "200", description = "Stats downloaded successfully")
     @GetMapping("/download")
     public ResponseEntity<String> downloadStatsAsText(HttpServletRequest request) {
         try {
@@ -87,7 +86,14 @@ public class StatsController {
         }
     }
 
-
+    @Operation(
+            summary = "Download subject-specific stats",
+            description = "Returns a downloadable JSON file containing task statistics grouped by subject",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Subject stats downloaded successfully"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
     @GetMapping(value = "/by-subject/download", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TasksBySubjectResponse> downloadStatsBySubject(HttpServletRequest request) {
         try {
@@ -105,6 +111,14 @@ public class StatsController {
         }
     }
 
+    @Operation(
+            summary = "Get subject-specific stats",
+            description = "Retrieves task statistics grouped by subject for the current user",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Subject stats retrieved successfully"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized or missing token")
+            }
+    )
     @GetMapping("/by-subject")
     public ResponseEntity<TasksBySubjectResponse> getStatsBySubject(HttpServletRequest request) {
         try {

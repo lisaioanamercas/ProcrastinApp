@@ -10,7 +10,6 @@ public interface TaskCompletionLogRepository extends JpaRepository<TaskCompletio
     List<TaskCompletionLog> findByUserIdOrderByCompletionDateDesc(Long userId);
 
     void deleteByUserIdAndTaskId(Long userId, Long taskId);
-    void deleteByUserIdAndCompletionDate(Long userId, LocalDate completionDate);
 
 
 }

@@ -23,9 +23,6 @@ public class HabitTaskService {
     @Autowired
     private UserRepository userRepository;
 
-   /* @Autowired
-    private SubjectRepository subjectRepository;*/
-
     @Autowired
     private HabitCompletionRepository habitCompletionRepository;
 

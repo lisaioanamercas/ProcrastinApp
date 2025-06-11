@@ -21,18 +21,6 @@ public class JwtUtils {
     @Value("${faculty.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-//    public String generateJwtToken(Authentication authentication) {
-//        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-//
-//        return Jwts.builder()
-//                .setSubject((userPrincipal.getUsername()))
-//                .claim("userId", userPrincipal.getId())  // !!!
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-//                .compact();
-//    }
-
     public String generateJwtToken(Authentication authentication) {
         Object principal = authentication.getPrincipal();
 

@@ -49,7 +49,6 @@ public class StudyTaskService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
-        // Find subject by name
         Subject subject = subjectRepository.findByName(request.getSubject());
         if (subject == null) {
             throw new ResourceNotFoundException("Subject not found with name: " + request.getSubject());
@@ -70,18 +69,15 @@ public class StudyTaskService {
 
     @Transactional
     public TaskResponse updateTask(Long userId, Long taskId, UpdateTaskRequest request) {
-        // Găsește task-ul care aparține utilizatorului
         StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
-        // Găsește subiectul nou
-        // Find subject by name
         Subject subject = subjectRepository.findByName(request.getSubject());
         if (subject == null) {
             throw new ResourceNotFoundException("Subject not found with name: " + request.getSubject());
         }
 
-        // Actualizează task-ul
+        // Actualizeaza task-ul
         task.setName(request.getName().trim());
         task.setDescription(request.getDescription() != null ? request.getDescription().trim() : null);
         task.setSubject(subject);
@@ -105,15 +101,6 @@ public class StudyTaskService {
     }
 
     @Transactional
-//    public TaskResponse toggleTaskCompletion(Long userId, Long taskId){
-//        StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
-//
-//        task.setCompleted(!task.getCompleted());
-//        StudyTask updatedTask = studyTaskRepository.save(task);
-//        return new TaskResponse(updatedTask);
-//    }
-
     public TaskResponse toggleTaskCompletion(Long userId, Long taskId) {
         StudyTask task = studyTaskRepository.findByIdAndUserId(taskId, userId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
@@ -125,6 +112,7 @@ public class StudyTaskService {
             LocalDateTime now = LocalDateTime.now();
             task.setCompletedAt(now);
 
+            //aici e logica de logger la care am semi renuntat
             TaskCompletionLog log = new TaskCompletionLog();
             log.setUserId(userId);
             log.setTaskId(taskId);
@@ -182,9 +170,6 @@ public class StudyTaskService {
         if (task.getDifficulty() != null) {
             score += task.getDifficulty() * 10;
         }
-
-
-
         score += 20;
 
         return score;

@@ -196,16 +196,13 @@ public void printTaskCompletionLog(Long userId) {
 }
     public int getLongestStreak(Long userId) {
         Set<LocalDate> completionDates = new HashSet<>();
-        // 1. Get task completion dates - use SAME logic as heatmap and getCurrentStreak
         List<StudyTask> completedTasks = studyTaskRepository.findByUserIdAndCompletedIsTrue(userId);
         for (StudyTask task : completedTasks) {
-            // Only include tasks that have a completion date
             if (task.getCompletedAt() != null) {
                 completionDates.add(task.getCompletedAt().toLocalDate());
             }
         }
 
-        // 2. Get habit completion dates
         List<HabitCompletion> habitCompletions = habitCompletionRepository.findByHabit_UserIdAndCompletedTrue(userId);
         for (HabitCompletion hc : habitCompletions) {
             if (hc.getCompleted()) { // Extra safety check
@@ -213,7 +210,6 @@ public void printTaskCompletionLog(Long userId) {
             }
         }
 
-        // 3. Calculate longest streak from all completion dates
         if (completionDates.isEmpty()) {
             return 0;
         }
@@ -239,15 +235,15 @@ public void printTaskCompletionLog(Long userId) {
         }
 
         return longestStreak;
-    }    // 5. Metodă pentru a returna toate statisticile într-un DTO
+    }
+
     public StudyStatsResponse getStatsForUser(Long userId) {
         StudyStatsResponse resp = new StudyStatsResponse();
-        resp.setTasksThisWeek(getWeeklyTaskCount(userId)); // Uncomment this line
+        resp.setTasksThisWeek(getWeeklyTaskCount(userId));
         resp.setAvgDifficulty(getAvgDifficulty(userId));
         resp.setAvgDuration(getAvgDuration(userId));
         resp.setLongestStreak(getLongestStreak(userId));
-        resp.setCurrentStreak(getCurrentStreak(userId)); // Add this line
-
+        resp.setCurrentStreak(getCurrentStreak(userId));
         return resp;
     }
 
@@ -279,9 +275,6 @@ public void printTaskCompletionLog(Long userId) {
 //            currentDate = currentDate.plusDays(1);
 //        }
 //    }
-
-
-
 
     //aici e demo
     public TasksBySubjectResponse getTaskStatsBySubject(Long userId) {
@@ -323,7 +316,6 @@ public void printTaskCompletionLog(Long userId) {
 
             response.getSubjects().add(stats);
         });
-
         return response;
     }
 

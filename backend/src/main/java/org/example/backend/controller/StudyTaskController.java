@@ -143,6 +143,14 @@ public class StudyTaskController {
         }
     }
 
+    @Operation(
+            summary = "Get grouped tasks",
+            description = "Retrieves tasks grouped by a certain criteria for the current user."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Grouped tasks retrieved successfully"
+    )
     @GetMapping("/grouped")
     public ResponseEntity<List<TaskResponse>> getGroupedTasks(HttpServletRequest request) {
         Long userId = getUserIdFromToken(request);

@@ -20,12 +20,6 @@ public interface StudyTaskRepository extends JpaRepository<StudyTask, Long> {
     @Query("SELECT t FROM StudyTask t WHERE t.user.id = :userId AND t.id = :taskId")
     Optional<StudyTask> findByIdAndUserId(@Param("taskId") Long taskId, @Param("userId") Long userId);
 
-    @Query("SELECT COUNT(t) FROM StudyTask t WHERE t.user.id = :userId AND t.completed = true")
-    Long countCompletedByUserId(@Param("userId") Long userId);
-
-    @Query("SELECT COUNT(t) FROM StudyTask t WHERE t.user.id = :userId")
-    Long countByUserId(@Param("userId") Long userId);
-
     List<StudyTask> findByUserIdAndCompletedIsTrueAndCompletedAtBetween(
             Long userId,
             LocalDateTime start,
@@ -36,7 +30,4 @@ public interface StudyTaskRepository extends JpaRepository<StudyTask, Long> {
 
     List<StudyTask> findByUserIdAndCompletedIsTrue(Long userId);
 
-
 }
-
-// momentan am metode pentru: gasirea taskurilor per utilizaot -- query uri pentru statisitici -- gasirea taskurilor dupa ID si userID :)

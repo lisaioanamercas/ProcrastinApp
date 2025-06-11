@@ -1,5 +1,7 @@
 package org.example.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.example.backend.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,14 @@ public class ActivityController {
         throw new RuntimeException("Invalid or missing authorization token");
     }
 
-
+    @Operation(
+            summary = "User login",
+            description = "Authenticates user and returns a JWT access token",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Login successful and token issued"),
+                    @ApiResponse(responseCode = "400", description = "User not found or invalid credentials")
+            }
+    )
     @GetMapping("/heatmap")
     public ResponseEntity<Map<String, Object>> getHeatmap(
             @RequestParam int year,
