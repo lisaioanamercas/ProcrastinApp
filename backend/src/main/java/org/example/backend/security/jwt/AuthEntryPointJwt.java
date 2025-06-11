@@ -25,7 +25,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-            throws IOException, ServletException {
+            throws IOException {
         logger.error("Unauthorized error: {}", authException.getMessage());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -40,11 +40,6 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), body);
     }
-//clasa asta se ocupa cu erorile de autentificare, adica atunci cand un utilizator nu este autorizat sa acceseze o resursa
-    // este folosita de Spring Security pentru a gestiona erorile de autentificare
-    // este un component care implementeaza interfata AuthenticationEntryPoint
-    // metoda commence este apelata atunci cand un utilizator nu este autorizat sa acceseze o resursa
-    // in aceasta metoda se seteaza statusul HTTP la 401 Unauthorized si se returneaza un mesaj JSON cu detalii despre eroare
-    // se foloseste ObjectMapper pentru a serializa obiectul body in JSON si a-l scrie in raspunsul HTTP
+
 }
 

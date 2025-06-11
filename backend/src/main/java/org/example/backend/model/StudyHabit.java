@@ -22,10 +22,6 @@ public class StudyHabit {
     @JoinColumn(name = "user_id")
     private User user;
 
-   /* @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
-    private Subject subject;*/
-
     @Column(nullable = false)
     private String name;
 
@@ -41,13 +37,5 @@ public class StudyHabit {
     @Column(nullable = false)
     private Boolean recurring = true;
 
-    public StudyHabit(User user, Subject subject, String name, String description, String dayOfWeek, LocalTime time) {
-        this.user = user;
-   //     this.subject = subject;
-        this.name = name;
-        this.description = description;
-        this.dayOfWeek = dayOfWeek;
-        this.time = time;
-        this.recurring = true;
-    }
+
 }

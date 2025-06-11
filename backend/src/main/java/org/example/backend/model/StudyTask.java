@@ -20,8 +20,6 @@ public class StudyTask {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    // aici am lazy fetch pentru a nu incarca automat utilizatorul asociat la fiecare interogare
-    // dacă ai nevoie de datele utilizatorului, le poți încărca explicit când e necesar
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", nullable = false)
@@ -51,18 +49,6 @@ public class StudyTask {
     public LocalDateTime getDeadline() { return deadline; }
     public void setDeadline(LocalDateTime deadline) { this.deadline = deadline; }
 
-    public StudyTask(User user, Subject subject, String name, String description,
-                     Integer durationMinutes, Integer difficulty, LocalDateTime deadline) {
-        this.user = user;
-        this.subject = subject;
-        this.name = name;
-        this.description = description;
-        this.durationMinutes = durationMinutes;
-        this.difficulty = difficulty;
-        this.deadline = deadline;
-        this.completed = false;
-        this.createdAt = LocalDateTime.now();
-    }
 
     public LocalDateTime getCompletedAt() {
         return completedAt;

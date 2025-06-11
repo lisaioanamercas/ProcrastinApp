@@ -8,7 +8,6 @@ import lombok.Setter;
 @Table(name = "subjects")
 public class Subject {
 
-    //getters & setters
     @Setter
     @Getter
     @Id

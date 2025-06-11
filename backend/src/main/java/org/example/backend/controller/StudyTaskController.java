@@ -31,7 +31,6 @@ public class StudyTaskController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    // extrage userId din JWT token
     private Long getUserIdFromToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -65,9 +64,7 @@ public class StudyTaskController {
         try {
             Long userId = getUserIdFromToken(httpServletRequest);
 
-            // Debug
             System.out.println("Creating task: " + request.getName());
-           // System.out.println("Subject name: " + request.getSubject());
             System.out.println("Duration: " + request.getDuration_minutes());
             System.out.println("Difficulty: " + request.getDifficulty());
 
@@ -133,7 +130,6 @@ public class StudyTaskController {
     @Operation(summary = "Toggle task completion", description = "Marks a task as completed or uncompleted.")
     @ApiResponse(responseCode = "200", description = "Task toggled successfully")
     @ApiResponse(responseCode = "404", description = "Task not found")
-    // mark a task as completed (toggle)
     @PatchMapping("/{taskId}/toggle")
     public ResponseEntity<TaskResponse> toggleTaskCompletion(
             @PathVariable Long taskId,
@@ -148,9 +144,9 @@ public class StudyTaskController {
     }
 
     @GetMapping("/grouped")
-    public ResponseEntity<List<List<TaskResponse>>> getGroupedTasks(HttpServletRequest request) {
+    public ResponseEntity<List<TaskResponse>> getGroupedTasks(HttpServletRequest request) {
         Long userId = getUserIdFromToken(request);
-        List<List<TaskResponse>> groups = studyTaskService.getGroupedTasks(userId);
+        List<TaskResponse> groups = studyTaskService.getGroupedTasks(userId);
         return ResponseEntity.ok(groups);
     }
 }

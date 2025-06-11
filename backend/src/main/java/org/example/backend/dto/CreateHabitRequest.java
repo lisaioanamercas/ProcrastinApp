@@ -1,6 +1,8 @@
 package org.example.backend.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,12 +22,9 @@ public class CreateHabitRequest {
     @Size(max = 50, message = "Day of week must be less than 10 characters")
     private String dayOfWeek;
 
-   /* @NotNull(message = "Recurring is required")
-    private Boolean recurring;*/
 
     @NotNull(message = "Time is required")
     private LocalTime time;
 
-   /* @NotNull(message = "Subject ID is required")
-    private String subject;*/
+
 }
