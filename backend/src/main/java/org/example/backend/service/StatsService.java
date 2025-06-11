@@ -116,46 +116,130 @@ public class StatsService {
     }
 
 
+//    public int getLongestStreak(Long userId) {
+//        // Get all activity completions for this user (both tasks and habits)
+//        List<TaskCompletionLog> completions = completionLogRepository.findByUserIdOrderByCompletionDateDesc(userId);
+//
+//        if (completions.isEmpty()) return 0;
+//
+//        // Group by date to handle multiple completions per day
+//        Set<LocalDate> completionDates = completions.stream()
+//                .map(TaskCompletionLog::getCompletionDate)
+//                .collect(Collectors.toSet());
+//
+//        // Calculate current streak (consecutive days from today backwards)
+//        int currentStreak = 0;
+//        int maxStreak = 0;
+//        LocalDate currentDate = LocalDate.now();
+//
+//        while (completionDates.contains(currentDate)) {
+//            currentStreak++;
+//            currentDate = currentDate.minusDays(1);
+//        }
+//
+//        maxStreak = Math.max(maxStreak, currentStreak);
+//
+//        // Look for past streaks
+//        List<LocalDate> sortedDates = new ArrayList<>(completionDates);
+//        Collections.sort(sortedDates);
+//
+//        currentStreak = 1;
+//        for (int i = 1; i < sortedDates.size(); i++) {
+//            if (sortedDates.get(i).isEqual(sortedDates.get(i-1).plusDays(1))) {
+//                currentStreak++;
+//                maxStreak = Math.max(maxStreak, currentStreak);
+//            } else {
+//                currentStreak = 1;
+//            }
+//        }
+//
+//        return maxStreak;
+//    }
+// In your service class
+//    public int getCurrentStreak(Long userId) {
+//        Set<LocalDate> completionDates = new HashSet<>();
+//
+//        // 1. Get task completion dates - use SAME logic as heatmap
+//        // Get all completed tasks for this user (no date restriction for streak calculation)
+//        List<StudyTask> completedTasks = studyTaskRepository.findByUserIdAndCompletedIsTrue(userId);
+//        for (StudyTask task : completedTasks) {
+//            // Only include tasks that have a completion date
+//            if (task.getCompletedAt() != null) {
+//                completionDates.add(task.getCompletedAt().toLocalDate());
+//            }
+//        }
+//
+//        // 2. Get habit completion dates
+//        List<HabitCompletion> habitCompletions = habitCompletionRepository.findByHabit_UserIdAndCompletedTrue(userId);
+//        for (HabitCompletion hc : habitCompletions) {
+//            if (hc.getCompleted()) { // Extra safety check
+//                completionDates.add(hc.getCompletionDate());
+//            }
+//        }
+//
+//        // 3. Calculate current streak (consecutive days from today backwards)
+//        int streak = 0;
+//        LocalDate currentDate = LocalDate.now();
+//
+//        while (completionDates.contains(currentDate)) {
+//            streak++;
+//            currentDate = currentDate.minusDays(1);
+//        }
+//
+//        return streak;
+//    }
+public void printTaskCompletionLog(Long userId) {
+    List<TaskCompletionLog> logs = completionLogRepository.findByUserIdOrderByCompletionDateDesc(userId);
+    for (TaskCompletionLog log : logs) {
+        System.out.println("Task ID: " + log.getTaskId() + ", Date: " + log.getCompletionDate());
+    }
+}
     public int getLongestStreak(Long userId) {
-        // Get all activity completions for this user (both tasks and habits)
-        List<TaskCompletionLog> completions = completionLogRepository.findByUserIdOrderByCompletionDateDesc(userId);
-
-        if (completions.isEmpty()) return 0;
-
-        // Group by date to handle multiple completions per day
-        Set<LocalDate> completionDates = completions.stream()
-                .map(TaskCompletionLog::getCompletionDate)
-                .collect(Collectors.toSet());
-
-        // Calculate current streak (consecutive days from today backwards)
-        int currentStreak = 0;
-        int maxStreak = 0;
-        LocalDate currentDate = LocalDate.now();
-
-        while (completionDates.contains(currentDate)) {
-            currentStreak++;
-            currentDate = currentDate.minusDays(1);
-        }
-
-        maxStreak = Math.max(maxStreak, currentStreak);
-
-        // Look for past streaks
-        List<LocalDate> sortedDates = new ArrayList<>(completionDates);
-        Collections.sort(sortedDates);
-
-        currentStreak = 1;
-        for (int i = 1; i < sortedDates.size(); i++) {
-            if (sortedDates.get(i).isEqual(sortedDates.get(i-1).plusDays(1))) {
-                currentStreak++;
-                maxStreak = Math.max(maxStreak, currentStreak);
-            } else {
-                currentStreak = 1;
+        Set<LocalDate> completionDates = new HashSet<>();
+        // 1. Get task completion dates - use SAME logic as heatmap and getCurrentStreak
+        List<StudyTask> completedTasks = studyTaskRepository.findByUserIdAndCompletedIsTrue(userId);
+        for (StudyTask task : completedTasks) {
+            // Only include tasks that have a completion date
+            if (task.getCompletedAt() != null) {
+                completionDates.add(task.getCompletedAt().toLocalDate());
             }
         }
 
-        return maxStreak;
-    }
-    // 5. Metodă pentru a returna toate statisticile într-un DTO
+        // 2. Get habit completion dates
+        List<HabitCompletion> habitCompletions = habitCompletionRepository.findByHabit_UserIdAndCompletedTrue(userId);
+        for (HabitCompletion hc : habitCompletions) {
+            if (hc.getCompleted()) { // Extra safety check
+                completionDates.add(hc.getCompletionDate());
+            }
+        }
+
+        // 3. Calculate longest streak from all completion dates
+        if (completionDates.isEmpty()) {
+            return 0;
+        }
+
+        // Convert to sorted list
+        List<LocalDate> sortedDates = new ArrayList<>(completionDates);
+        Collections.sort(sortedDates);
+
+        int longestStreak = 1;
+        int currentStreak = 1;
+
+        for (int i = 1; i < sortedDates.size(); i++) {
+            LocalDate currentDate = sortedDates.get(i);
+            LocalDate previousDate = sortedDates.get(i - 1);
+
+            // Check if current date is consecutive to previous date
+            if (currentDate.equals(previousDate.plusDays(1))) {
+                currentStreak++;
+                longestStreak = Math.max(longestStreak, currentStreak);
+            } else {
+                currentStreak = 1; // Reset streak
+            }
+        }
+
+        return longestStreak;
+    }    // 5. Metodă pentru a returna toate statisticile într-un DTO
     public StudyStatsResponse getStatsForUser(Long userId) {
         StudyStatsResponse resp = new StudyStatsResponse();
         resp.setTasksThisWeek(getWeeklyTaskCount(userId)); // Uncomment this line

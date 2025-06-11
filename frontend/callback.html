@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging in...</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+        <div style="text-align: center;">
+            <div style="font-size: 24px; margin-bottom: 10px;">🚀</div>
+            <div>Completing login...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Extract token and user data from URL parameters or handle redirect
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const username = urlParams.get('username');
+        const email = urlParams.get('email');
+        
+        if (token && username && email) {
+            // Store user data
+            localStorage.setItem('token', token);
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+            
+            // Redirect to home page
+            window.location.href = 'home.html';
+        } else {
+            // If no token, redirect back to login with error
+            window.location.href = 'login.html?error=oauth_failed';
+        }
+    </script>
+</body>
+</html>

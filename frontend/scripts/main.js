@@ -35,7 +35,62 @@ if (localStorage.getItem('darkTheme') === 'true') {
     }
 }
 
+// function checkAuth() {
+//     const token = localStorage.getItem('token');
+//     const username = localStorage.getItem('username');
+//     const email = localStorage.getItem('email');
+    
+//     if (!token) {
+//         // Redirect to login if no token
+//         window.location.href = 'login.html';
+//         return;
+//     }
+    
+//     // Use stored user data
+//     currentUser = {
+//         username: username,
+//         email: email,
+//         name: username
+//     };
+    
+//     updateUserInterface();
+//     loadDashboard();
+// }
+
 function checkAuth() {
+    // First check for OAuth parameters in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const oauthToken = urlParams.get('token');
+    const oauthUsername = urlParams.get('username');
+    const oauthEmail = urlParams.get('email');
+    const isOAuth = urlParams.get('oauth');
+    
+    if (isOAuth === 'true' && oauthToken && oauthUsername && oauthEmail) {
+        // Store OAuth login data
+        localStorage.setItem('token', oauthToken);
+        localStorage.setItem('username', oauthUsername);
+        localStorage.setItem('email', oauthEmail);
+        
+        // Clean URL by removing parameters
+        const url = new URL(window.location);
+        url.search = '';
+        window.history.replaceState({}, document.title, url.pathname);
+        
+        console.log('OAuth login successful for:', oauthUsername);
+        
+        // Set current user from OAuth data
+        currentUser = {
+            username: oauthUsername,
+            email: oauthEmail,
+            name: oauthUsername
+        };
+        
+        updateUserInterface();
+        loadDashboard();
+        return;
+    }
+    
+    // Existing token check logic
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
     const email = localStorage.getItem('email');

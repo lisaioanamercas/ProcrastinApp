@@ -108,9 +108,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if user is already logged in
     const token = localStorage.getItem('token');
     if (token) {
-        window.location.href = 'home.html'; // Also update this redirect
+        window.location.href = 'home.html';
+        return;
+    }
+    
+    // Check for OAuth error in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    if (error === 'oauth_failed') {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = 'Google login failed. Please try again.';
+        messageDiv.className = 'message error show';
     }
 });
+
 
 // Input Focus Effects
 document.querySelectorAll('.form-input').forEach(input => {
@@ -126,6 +137,11 @@ document.querySelectorAll('.form-input').forEach(input => {
 // Social Login Handlers
 document.querySelectorAll('.social-button').forEach(button => {
     button.addEventListener('click', function(e) {
+        // Don't prevent default for Google login - let it navigate to OAuth endpoint
+        if (this.href && this.href.includes('oauth2/authorization/google')) {
+            return; // Allow normal navigation
+        }
+        
         e.preventDefault();
         const provider = this.textContent.trim();
         alert(`${provider} login would be implemented here`);

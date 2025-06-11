@@ -2,6 +2,9 @@ package org.example.backend.security;
 
 import org.example.backend.security.jwt.AuthEntryPointJwt;
 import org.example.backend.security.jwt.AuthTokenFilter;
+import org.example.backend.security.oauth2.OAuth2AuthenticationFailureHandler;
+import org.example.backend.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import org.example.backend.service.CustomOAuth2UserService;
 import org.example.backend.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,15 +37,14 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
-//    @Autowired
-//    private CustomOAuth2UserService customOAuth2UserService;
-//
-//    @Autowired
-//    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-//
-//    @Autowired
-//    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
 
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -77,25 +79,24 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/oauth2/**", // Add this to permit OAuth2 endpoints
+                                "/oauth2/**",
                                 "/error",
                                 "/api/test/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
-//                .oauth2Login(oauth2 -> oauth2
-//                        .userInfoEndpoint(userInfo -> userInfo
-//                                .userService(customOAuth2UserService)
-//                        )
-//                        .successHandler(oAuth2AuthenticationSuccessHandler)
-//                        .failureHandler(oAuth2AuthenticationFailureHandler)
-//                )
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                        .failureHandler(oAuth2AuthenticationFailureHandler)
+                )
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
