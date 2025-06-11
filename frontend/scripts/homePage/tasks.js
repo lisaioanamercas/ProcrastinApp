@@ -124,8 +124,8 @@ class TaskService {
                     id: Math.floor(Math.random() * 1000),
                     name: taskData.name,
                     description: taskData.description, 
-                    subject_name: taskData.subject,        // ✅ Fixed
-                    duration_minutes: taskData.duration_minutes, // ✅ Fixed
+                    subject_name: taskData.subject,
+                    duration_minutes: taskData.duration_minutes,
                     difficulty: taskData.difficulty,
                     deadline: taskData.deadline,
                     completed: false
@@ -294,6 +294,3 @@ class TaskService {
     }
    
 }
-
-// New function to load grouped habits
-

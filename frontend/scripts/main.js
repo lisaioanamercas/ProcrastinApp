@@ -75,38 +75,9 @@ function updateUserInterface() {
     }
 }
 
-// Load all dashboard data
-// function loadDashboard() {
-//     // Create service instances
-//     const taskService = new TaskService();
-//     const subjectService = new SubjectService();
-//     const habitService = new HabitService();
-//     const heatmapService = new HeatmapService(); // Add this
-//     const habitUI = new habitUi(habitService);
-//     const heatmapUI = new HeatmapUI(heatmapService);
-//     // Pentru acces global la submit
-//     window.habitServiceInstance = habitService;
-//     window.habitUIInstance = habitUI;
-//     window.heatmapUIInstance = heatmapUI;
-
-//     // Create and initialize UI handlers
-//     const taskUI = new TaskUI(taskService, subjectService);
-//     taskUI.loadTasks();
-//     habitUI.loadHabits();
-//     heatmapUI.init(); // Add this
-
-
-//     // Update stats
-//     updateStats();
-// }
 async function loadDashboard() {
     console.log('Loading dashboard...');
-    // Update stats
-    // updateStats();
-    
-    // Create service instances
-   
-    
+     
     console.log('HeatmapService created:', heatmapService);
     
     const habitUI = new habitUi(habitService);

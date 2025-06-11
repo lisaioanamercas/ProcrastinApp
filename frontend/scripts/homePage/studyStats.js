@@ -44,18 +44,4 @@ class StudyStats {
         if (!difficulties.length) return 0;
         return (difficulties.reduce((a, b) => a + b, 0) / difficulties.length).toFixed(1);
     }
-
-    // 3. Average Duration (in hours)
-/*    getAvgDuration() {
-        const durations = this.tasks.map(t => t.duration_minutes).filter(d => d != null);
-        if (!durations.length) return 0;
-        return (durations.reduce((a, b) => a + b, 0) / durations.length / 60).toFixed(1);
-    }
-
-    // 4. Longest Streak (habits)
-    getLongestStreak() {
-        // Exemplu simplificat: presupunem că ai un câmp streak pe habit
-        if (!this.habits.length) return 0;
-        return Math.max(...this.habits.map(h => h.streak || 0));
-    }*/
 }
